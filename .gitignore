@@ -54,5 +54,8 @@ dkms.conf
 # macOS
 .DS_Store
 
+# Code
+.vscode/
+
 # Project specific
 minishell
