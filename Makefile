@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/06/22 11:11:52 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/06/23 15:48:35 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra
 
 SRCS		=	$(addprefix sources/, \
-					minishell.c \
+					builtins/debug.c utils/env.c utils/misc.c minishell.c \
+					executor/executor.c parser/parser.c \
 				)
 OBJS	=	${SRCS:.c=.o}
 
