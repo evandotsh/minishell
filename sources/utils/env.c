@@ -6,11 +6,11 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 12:00:01 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/22 12:00:11 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/22 19:13:39 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_env	*ft_env(char **envp)
 {
