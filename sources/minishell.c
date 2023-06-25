@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:59:11 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 18:20:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/25 17:40:49 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strncmp(line, "clear", ft_strlen("clear")) == 0)
 			system("clear");
 		else
+		{
 			parser(line);
+		}
 		free(line);
 	}
 	free(line);
