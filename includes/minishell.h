@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 15:49:08 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/23 18:11:23 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_minishell
 {
 	t_env			*env;
 	t_cmd			*cmd;
+	int				last_exit_status;
 }					t_minishell;
 
 // Prototypes
