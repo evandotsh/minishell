@@ -25,7 +25,7 @@ présents dans la séquence entre guillemets **sauf le $**.
 > - Séparer les élément lors qu'ils sont collé aux **|** , **>**, **<**, **>>**, **<<**.
 
 > > <span style="color:yellow">Exemple: ls|wc -l</span> Ici nous avons 4 élément mais il faut les séparer aux niveau des ***pipes***.
- > > - <span style="color:red">1:</span><span style="color:blue"> ls</span>
+ > > - <font style="color:red">1:</font><font style="color:blue"> ls</font>
  > > - <span style="color:red">1:</span><span style="color:blue"> |</span>
  > > - <span style="color:red">1:</span><span style="color:blue"> wc</span>
   > > - <span style="color:red">1:</span><span style="color:blue"> -l</span>
