@@ -2,8 +2,10 @@
 
 ![Norminette Badge](https://github.com/evandotsh/minishell/actions/workflows/norminette.yml/badge.svg)
 
-<a href="https://github.com/evandotsh/minishell/blob/main/PARCING.md">Parsing</a>
-# Glossaire
+## 📖 Table des matières
+* <a href="https://github.com/evandotsh/minishell/blob/main/PARSING.md">Parsing</a>
+
+## 📚 Lexique
 
 ## Pipeline
 Un pipeline est une suite de commandes séparées par des redirections. Par exemple, `ls | wc -l > out.txt` est un pipeline.
