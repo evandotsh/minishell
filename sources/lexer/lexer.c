@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/26 15:19:37 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:29:20 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,21 @@ void	add_token(t_token *token, char *str)
 	token->next = new_token;
 }
 
+void	free_token(t_token *token)
+{
+	t_token *temp;
+
+	temp = token;
+	while (temp->next != NULL)
+	{
+		printf("%s\n", temp->token);
+		free(temp);
+		temp = temp->next;
+	}
+	printf("%s\n", temp->token);
+	free(temp);
+}
+
 void	lexer(char *line)
 {
 	t_token	*token;
@@ -47,4 +62,5 @@ void	lexer(char *line)
 		add_token(token, argv[i]);
 		i++;
 	}
+	free_token(token);
 }
