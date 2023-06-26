@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 18:11:23 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:05:44 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ typedef struct s_minishell
 	t_cmd			*cmd;
 	int				last_exit_status;
 }					t_minishell;
+
+typedef struct s_token
+{
+	char 			*token;
+	struct s_token	*next;
+}				t_token;
 
 // Prototypes
 char				*ft_strndup(char *str, int n);
