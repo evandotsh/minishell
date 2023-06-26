@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 18:58:13 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 15:37:02 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:34:34 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,61 @@ void	colors(void)
 	printf(C_CYAN DEBUG_PANGRAM);
 }
 
-// echo "hello world" > file.txt
+// cat STRUCTS.md | grep minishell | wc -c
 void	example_cmd_struct(void)
 {
-	t_cmd	cmd;
-	t_redir	redir;
+	t_redir	*redir;
+	t_cmd	*pipeline;
 
-	redir.type = REDIR_OUT;
-	redir.file = "file.txt";
-	cmd.cmd = "/bin/echo";
-	cmd.args = ft_split("echo hello world", ' ');
-	cmd.redir = &redir;
-	cmd.next = NULL;
-	printf("cmd: %s\n", cmd.cmd);
-	printf("args: %s %s\n", cmd.args[0], cmd.args[1]);
-	printf("redir_type: %d\n", cmd.redir->type);
-	printf("redir_file: %s\n", cmd.redir->file);
-	printf("next: %p\n", cmd.next);
-	executor(&cmd);
+	pipeline = malloc(sizeof(t_cmd));
+	redir = malloc(sizeof(t_redir) * 2);
+	redir[0].type = REDIR_PIPE;
+	redir[1].type = REDIR_NONE;
+	pipeline[0].cmd = "/bin/cat";
+	pipeline[0].args = ft_split("/bin/cat STRUCTS.md", ' ');
+	pipeline[0].redir = &redir[0];
+	pipeline[0].next = &pipeline[1];
+	pipeline[1].cmd = "/usr/bin/grep";
+	pipeline[1].args = ft_split("/usr/bin/grep minishell", ' ');
+	pipeline[1].redir = &redir[1];
+	pipeline[1].next = NULL;
+	//pipeline[2].cmd = "/usr/bin/wc";
+	//pipeline[2].args = ft_split("/usr/bin/wc -c", ' ');
+	//pipeline[2].redir = NULL;
+	//pipeline[2].next = NULL;
+	executor(pipeline);
+}
+
+void	redir_out_test(void)
+{
+	t_redir	*redir;
+	t_cmd	*pipeline;
+
+	pipeline = malloc(sizeof(t_cmd));
+	redir = malloc(sizeof(t_redir));
+	redir->type = REDIR_OUT;
+	redir->file = "test.txt";
+	pipeline->cmd = "/bin/cat";
+	pipeline->args = ft_split("/bin/cat STRUCTS.md", ' ');
+	pipeline->redir = redir;
+	pipeline->next = NULL;
+	executor(pipeline);
+}
+
+void	redir_in_test(void)
+{
+	t_redir	*redir;
+	t_cmd	*pipeline;
+
+	pipeline = malloc(sizeof(t_cmd));
+	redir = malloc(sizeof(t_redir));
+	redir->type = REDIR_IN;
+	redir->file = "STRUCTS.md";
+	pipeline->cmd = "/bin/cat";
+	pipeline->args = ft_split("/bin/cat", ' ');
+	pipeline->redir = redir;
+	pipeline->next = NULL;
+	executor(pipeline);
 }
 
 void	debug(char *line, t_env *env)
@@ -57,5 +94,5 @@ void	debug(char *line, t_env *env)
 	if (ft_strncmp(args[1], "run", ft_strlen("run")) == 0)
 		system(args[2]);
 	if (ft_strncmp(args[1], "cmd", ft_strlen("cmd")) == 0)
-		example_cmd_struct();
+		redir_out_test();
 }
