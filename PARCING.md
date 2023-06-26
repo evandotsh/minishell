@@ -1,4 +1,4 @@
-### ⭐ Parcer
+### ⭐ Parser
 
 >- Si les quote **" " ou ' '** ne sont pas fermé alors **return une erreur sytax**.
 >
