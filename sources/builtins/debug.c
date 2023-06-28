@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 18:58:13 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/26 11:34:34 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:45:22 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ void	colors(void)
 }
 
 // cat STRUCTS.md | grep minishell | wc -c
-void	example_cmd_struct(void)
+void	pipeline_test(void)
 {
 	t_redir	*redir;
 	t_cmd	*pipeline;
 
 	pipeline = malloc(sizeof(t_cmd));
-	redir = malloc(sizeof(t_redir) * 2);
+	redir = malloc(sizeof(t_redir) * 3);
 	redir[0].type = REDIR_PIPE;
-	redir[1].type = REDIR_NONE;
+	redir[1].type = REDIR_PIPE;
+	redir[2].type = REDIR_NONE;
 	pipeline[0].cmd = "/bin/cat";
 	pipeline[0].args = ft_split("/bin/cat STRUCTS.md", ' ');
 	pipeline[0].redir = &redir[0];
@@ -40,11 +41,11 @@ void	example_cmd_struct(void)
 	pipeline[1].cmd = "/usr/bin/grep";
 	pipeline[1].args = ft_split("/usr/bin/grep minishell", ' ');
 	pipeline[1].redir = &redir[1];
-	pipeline[1].next = NULL;
-	//pipeline[2].cmd = "/usr/bin/wc";
-	//pipeline[2].args = ft_split("/usr/bin/wc -c", ' ');
-	//pipeline[2].redir = NULL;
-	//pipeline[2].next = NULL;
+	pipeline[1].next = &pipeline[2];
+	pipeline[2].cmd = "/usr/bin/wc";
+	pipeline[2].args = ft_split("/usr/bin/wc -c", ' ');
+	pipeline[2].redir = &redir[2];
+	pipeline[2].next = NULL;
 	executor(pipeline);
 }
 
@@ -94,5 +95,5 @@ void	debug(char *line, t_env *env)
 	if (ft_strncmp(args[1], "run", ft_strlen("run")) == 0)
 		system(args[2]);
 	if (ft_strncmp(args[1], "cmd", ft_strlen("cmd")) == 0)
-		redir_out_test();
+		pipeline_test();
 }

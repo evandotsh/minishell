@@ -12,7 +12,7 @@
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra -g
 
 SRCS		=	$(addprefix sources/, \
 					builtins/debug.c utils/env.c utils/misc.c minishell.c \
