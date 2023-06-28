@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/26 15:29:20 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:06:03 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,39 @@ void	free_token(t_token *token)
 	temp = token;
 	while (temp->next != NULL)
 	{
-		printf("%s\n", temp->token);
+		ft_printf("%s\n", temp->token);
 		free(temp);
 		temp = temp->next;
 	}
-	printf("%s\n", temp->token);
+	ft_printf("%s", temp->token);
 	free(temp);
+}
+
+char	*add_Spaces(char	*str)
+{
+	size_t	len;
+	char	*result;
+	size_t	i;
+	size_t	j;
+
+	len = ft_strlen(str);
+	i = 0;
+    j = 0;
+	if (str == NULL)
+		return (NULL);
+	result = (char*)malloc((len * 2 + 1) * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>') || (str[i] == '<' && str[i - 1] != '<'))
+			result[j++] = ' ';
+		if (str[i - 1] == '|' || (str[i - 1] == '>' && str[i] != '>') || (str[i - 1] == '<' && str[i] != '<'))
+			result[j++] = ' ';
+		result[j++] = str[i++];
+    }
+	result[j] = '\0';
+	return (result);
 }
 
 void	lexer(char *line)
@@ -50,17 +77,19 @@ void	lexer(char *line)
 	int		i;
 	char 	**argv;
 
-	i = 0;
-	argv = ft_split(line, " ");
+	i = 1;
+	line = add_Spaces(line);
+	argv = ft_split(line, ' ');
 	token = malloc(sizeof(*token) * 2);
 	if (!token)
 		exit (EXIT_FAILURE);
-	token->token = argv[i];
+	token->token = argv[0];
 	token->next = NULL;
-	while (argv[++i])
+	while (argv[i])
 	{
 		add_token(token, argv[i]);
 		i++;
 	}
+	free(line);
 	free_token(token);
 }
