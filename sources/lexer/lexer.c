@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:15:12 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:42:37 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,14 @@ char	*add_Spaces(char	*str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>') || (str[i] == '<' && str[i - 1] != '<'))
+		{
 			result[j++] = ' ';
+			if (str[i + 2] == '>' || str[i + 2] == '<')
+			{
+				ft_printf("syntax error\n");
+				exit (EXIT_FAILURE);
+			}
+		}
 		if (str[i - 1] == '|' || (str[i - 1] == '>' && str[i] != '>') || (str[i - 1] == '<' && str[i] != '<'))
 			result[j++] = ' ';
 		result[j++] = str[i++];
