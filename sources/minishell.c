@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:59:11 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 18:20:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/28 10:37:10 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("\n%s%s\n%s", C_PURPLE, make_prompt(), C_YELLOW);
 		line = readline(PROMPT C_RESET);
+		lexer(line);
 		if (line[0] != '\0')
 			add_history(line);
 		if (ft_strncmp(line, "debug", ft_strlen("debug")) == 0)

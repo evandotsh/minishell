@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/26 14:05:44 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 10:29:03 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ void				print_env(t_env *env);
 void				debug(char *line, t_env *env);
 char				*get_pretty_cwd(void);
 void				executor(t_cmd *cmd_list);
+void				lexer(char *line);
 void				parser(char *line);
 #endif

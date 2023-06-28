@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
+#    By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/06/23 15:48:35 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/06/28 10:32:57 by sfernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS		=	-Wall -Werror -Wextra
 
 SRCS		=	$(addprefix sources/, \
 					builtins/debug.c utils/env.c utils/misc.c minishell.c \
-					executor/executor.c parser/parser.c \
+					executor/executor.c parser/parser.c lexer/lexer.c \
 				)
 OBJS	=	${SRCS:.c=.o}
 
