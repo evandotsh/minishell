@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 10:44:14 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:06:03 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,35 @@ void	free_token(t_token *token)
 		free(temp);
 		temp = temp->next;
 	}
-	ft_printf("%s\n", temp->token);
+	ft_printf("%s", temp->token);
 	free(temp);
+}
+
+char	*add_Spaces(char	*str)
+{
+	size_t	len;
+	char	*result;
+	size_t	i;
+	size_t	j;
+
+	len = ft_strlen(str);
+	i = 0;
+    j = 0;
+	if (str == NULL)
+		return (NULL);
+	result = (char*)malloc((len * 2 + 1) * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>') || (str[i] == '<' && str[i - 1] != '<'))
+			result[j++] = ' ';
+		if (str[i - 1] == '|' || (str[i - 1] == '>' && str[i] != '>') || (str[i - 1] == '<' && str[i] != '<'))
+			result[j++] = ' ';
+		result[j++] = str[i++];
+    }
+	result[j] = '\0';
+	return (result);
 }
 
 void	lexer(char *line)
@@ -51,6 +78,7 @@ void	lexer(char *line)
 	char 	**argv;
 
 	i = 1;
+	line = add_Spaces(line);
 	argv = ft_split(line, ' ');
 	token = malloc(sizeof(*token) * 2);
 	if (!token)
@@ -62,5 +90,6 @@ void	lexer(char *line)
 		add_token(token, argv[i]);
 		i++;
 	}
+	free(line);
 	free_token(token);
 }
