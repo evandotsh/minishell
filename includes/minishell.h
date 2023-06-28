@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 15:46:07 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:05:45 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,6 @@ char				*get_pretty_cwd(void);
 void				executor(t_cmd *cmd_list);
 void				lexer(char *line);
 void				parser(char *line);
+char				**ft_split_lexer(char const *s, char c);
+
 #endif

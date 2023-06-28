@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 13:06:03 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:15:12 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	lexer(char *line)
 
 	i = 1;
 	line = add_Spaces(line);
-	argv = ft_split(line, ' ');
+	argv = ft_split_lexer(line, ' ');
 	token = malloc(sizeof(*token) * 2);
 	if (!token)
 		exit (EXIT_FAILURE);
