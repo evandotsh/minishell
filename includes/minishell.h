@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:05:45 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:13:54 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,9 @@ void				print_env(t_env *env);
 void				debug(char *line, t_env *env);
 char				*get_pretty_cwd(void);
 void				executor(t_cmd *cmd_list);
-void				lexer(char *line);
+t_token				*lexer(char *line);
 void				parser(char *line);
 char				**ft_split_lexer(char const *s, char c);
+void				free_token(t_token *token);
 
 #endif
