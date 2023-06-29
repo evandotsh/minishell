@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:43:11 by sfernand          #+#    #+#             */
-/*   Updated: 2023/06/28 16:28:21 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/29 10:20:30 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	verif_quote(const char *s, size_t i)
 		i++;
 		while (s[i] != 39)
 		{
-			i++;
 			if (i > ft_strlen(s))
 			{
-				ft_printf("Invalid syntax\n");
-				exit (EXIT_FAILURE);
+				ft_printf("Syntax Error\n");
+				return (0);
 			}
+			i++;
 		}
 	}
 	else if (s[i] == 34)
@@ -68,12 +68,12 @@ int	verif_quote(const char *s, size_t i)
 		i++;
 		while (s[i] != 34)
 		{
-			i++;
 			if (i > ft_strlen(s))
 			{
-				ft_printf("Invalid syntax\n");
-				exit (EXIT_FAILURE);
+				ft_printf("Syntax Error\n");
+				return (0);
 			}
+			i++;
 		}
 	}
 	return (i);
@@ -91,7 +91,11 @@ char	**execute(char **split, char const *s, char c, int index)
 		if (s[i] != c && index < 0)
 			index = i;
 		if (s[i] == 39 || s[i] == 34)
+		{
 			i = verif_quote(s, i);
+			if (i == 0)
+				return (NULL);
+		}
 		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
 		{
 			split[j++] = word_dup(s, index, i);

@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:10:41 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:42:02 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,21 @@ void	add_token(t_token *token, char *str)
 
 char	*check_redir(char *str, int i, int j, char *result)
 {
+	int	x;
+	x = 1;
 	while (str[i] != '\0')
 	{
+		if ((str[i] == 34 || str[i] == 39) && x == 0)
+		{
+			result[j++] = ' ';
+			x = 1;
+		}
+		else if ((str[i] == 34 || str[i] == 39) && x == 1)
+		{
+			result[j++] = str[i++];
+			result[j++] = ' ';
+			x = 0;
+		}
 		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>')
 			|| (str[i] == '<' && str[i - 1] != '<'))
 		{
@@ -79,7 +92,10 @@ t_token	*lexer(char *line)
 
 	i = 1;
 	line = add_spaces(line);
+	ft_printf("%s\n", line);
 	token = malloc(sizeof(*token) * 2);
+	if (!token)
+		exit (EXIT_FAILURE);
 	if (line == NULL)
 	{
 		token->token = NULL;
@@ -87,8 +103,12 @@ t_token	*lexer(char *line)
 		return (token);
 	}
 	argv = ft_split_lexer(line, ' ');
-	if (!token)
-		exit (EXIT_FAILURE);
+	if (!argv)
+	{
+		token->token = NULL;
+		token->next = NULL;
+		return (token);
+	}
 	token->token = argv[0];
 	token->next = NULL;
 	while (argv[i])
