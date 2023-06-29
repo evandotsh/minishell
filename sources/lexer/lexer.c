@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/29 11:42:02 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:58:17 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,39 @@ void	add_token(t_token *token, char *str)
 char	*check_redir(char *str, int i, int j, char *result)
 {
 	int	x;
-	x = 1;
+	int a;
+
+	x = 0;
+	a = 0;
 	while (str[i] != '\0')
 	{
-		if ((str[i] == 34 || str[i] == 39) && x == 0)
+		if (str[i] == 34)
 		{
-			result[j++] = ' ';
-			x = 1;
+			if (a != 1)
+			{
+				if (x == 1)
+				{
+					result[j++] = str[i++];
+					x = 0;
+				}
+				else
+					x = 1;
+				result[j++] = ' ';
+			}
 		}
-		else if ((str[i] == 34 || str[i] == 39) && x == 1)
+		else if (str[i] == 39)
 		{
-			result[j++] = str[i++];
-			result[j++] = ' ';
-			x = 0;
+			if (x != 1)
+			{
+				if (a == 1)
+				{
+					result[j++] = str[i++];
+					a = 0;
+				}
+				else
+					a = 1;
+				result[j++] = ' ';
+			}
 		}
 		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>')
 			|| (str[i] == '<' && str[i - 1] != '<'))
