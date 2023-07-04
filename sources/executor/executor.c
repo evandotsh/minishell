@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:56:28 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/26 17:06:34 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:23:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,8 @@ void	executor(t_cmd *pipeline)
 			// Parent process
 			waitpid(pid, NULL, 0);
 		}
-
 		pipeline = pipeline->next;
 	}
-
 	dup2(stdin_copy, STDIN_FILENO);
 	dup2(stdout_copy, STDOUT_FILENO);
 	close(stdin_copy);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:59:11 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 10:37:10 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/29 12:04:50 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,22 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	t_env	*env;
+	t_token	*token;
 
 	(void)argc;
 	(void)argv;
 	env = ft_env(envp);
-	(void) env;
 	g_minishell.last_exit_status = 1;
 	while (TRUE)
 	{
 		printf("\n%s%s\n%s", C_PURPLE, make_prompt(), C_YELLOW);
 		line = readline(PROMPT C_RESET);
-		lexer(line);
+		token = lexer(line);
+		while (token != NULL)
+		{
+			printf("%s\n", token->token);
+			token = token->next;
+		}
 		if (line[0] != '\0')
 			add_history(line);
 		if (ft_strncmp(line, "debug", ft_strlen("debug")) == 0)
@@ -51,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strncmp(line, "clear", ft_strlen("clear")) == 0)
 			system("clear");
 		else
-			parser(line);
+			//parser(line);
 		free(line);
 	}
 	free(line);

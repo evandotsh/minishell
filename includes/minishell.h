@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:13:54 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:34:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ t_token				*lexer(char *line);
 void				parser(char *line);
 char				**ft_split_lexer(char const *s, char c);
 void				free_token(t_token *token);
+void				expander(t_cmd *cmd_list);
 
 #endif
