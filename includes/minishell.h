@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:34:26 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/07/09 17:38:31 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,11 @@ void				debug(char *line, t_env *env);
 char				*get_pretty_cwd(void);
 void				executor(t_cmd *cmd_list);
 t_token				*lexer(char *line);
-void				parser(char *line);
+void				parser(t_token *token);
 char				**ft_split_lexer(char const *s, char c);
 void				free_token(t_token *token);
 void				expander(t_cmd *cmd_list);
+char				*epur_str(char *str);
+void				add_args(t_cmd	*cmd, t_token *token);
 
 #endif
