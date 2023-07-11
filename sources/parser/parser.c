@@ -3,54 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:58:01 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/23 18:09:32 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/07/10 00:00:55 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// dumb parser, only handle one command, no pipes, no redirections, no nothing
-void	parser(char *line)
+void	add_redir(char	*str, t_cmd *new_args, t_token *token)
 {
-	t_cmd	cmd;
-	int		i;
-	int		j;
+	t_redir	*redir;
+
+	ft_printf("rets6\n");
+	redir = malloc(sizeof(*redir) * 3);
+	ft_printf("rets7\n");
+	redir->file = str;
+	ft_printf("rets8\n");
+	redir->next = NULL;
+	ft_printf("rets9\n");
+	ft_printf("rets10\n");
+	if (!new_args->redir)
+	{
+		ft_printf("1\n");
+		new_args->redir = redir;
+		if (str[0] == '|')
+		{
+			if (token->next)
+				token = token->next;
+			add_args(new_args->next, token);
+		}
+	} 
+	else if (new_args->redir)
+	{
+		ft_printf("2\n");
+		new_args->redir->next = redir;
+		if (str[0] == '|')
+		{
+			if (token->next)
+				token = token->next;
+			add_args(new_args->next, token);
+		}
+	}
+	ft_printf("rets11\n");
+}
+
+void	add_args(t_cmd	*cmd, t_token *token)
+{
+	t_cmd		*new_args;
+	int			i;
+	
+	i = 0;
+	ft_printf("%s\n", token->token);
+	ft_printf("rets1\n");
+	new_args = malloc(sizeof(*new_args));
+	ft_printf("rets2\n");
+	ft_printf("rets3\n");
+	ft_printf("rets4\n");
+	new_args->args = malloc(sizeof(char *));
+	new_args->next = NULL;
+	ft_printf("rets5\n");
+	while (token->next != NULL)
+	{
+		ft_printf("%s = token\n", token->token);
+		if (cmd == NULL)
+		{
+			ft_printf("CMD\n");
+			new_args->cmd = token->token;
+			if (token->next != NULL)
+				token = token->next;
+		}
+		else if (token->token[0] == '|'
+		|| token->token[0] == '<' || token->token[0] == '>')
+			add_redir(token->token, new_args, token);
+		else if (token->token[0] != 0)
+		{
+			ft_printf("yrd1\n");
+			new_args->args[i] = ft_strdup(token->token);
+			ft_printf("yrd2\n");
+			i++;
+		}
+		ft_printf("rets12\n");
+		if (token->next != NULL)
+			token = token->next;
+	}
+	ft_printf("rets13\n");
+	if (cmd == NULL)
+	{
+		ft_printf("CMD\n");
+		new_args->cmd = token->token;
+		if (token->next != NULL)
+			token = token->next;
+	}
+	else if (token->token[0] == '|'
+	|| token->token[0] == '<' || token->token[0] == '>')
+		add_redir(token->token, new_args, token);
+	else if (token->token[0] != 0)
+		new_args->args[i] = ft_strdup(token->token);
+	cmd = new_args;
+	free (new_args->args);
+	free (new_args);
+}
+
+void	parser(t_token *token)
+{
+	t_cmd	*cmd;
+	int	i;
 
 	i = 0;
-	j = 0;
-	cmd.cmd = NULL;
-	cmd.args = NULL;
-	while (line[i] != '\0')
+	cmd = malloc(sizeof(*cmd));
+	cmd->cmd = token->token;
+	cmd->next = NULL;
+	ft_printf("cmd\n");
+	if (token->next != NULL)
 	{
-		if (line[i] == ' ')
-		{
-			if (cmd.cmd == NULL)
-				cmd.cmd = ft_strndup(line, i);
-			else
-			{
-				cmd.args = malloc(sizeof(char *) * 3);
-				cmd.args[0] = ft_strdup(cmd.cmd);
-				cmd.args[1] = ft_strndup(line, i);
-				cmd.args[2] = NULL;
-			}
-			j = i + 1;
-		}
-		i++;
+		token = token->next;
+		add_args(cmd, token);
 	}
-	if (cmd.cmd == NULL)
-		cmd.cmd = ft_strndup(line, i);
-	else
-	{
-		cmd.args = malloc(sizeof(char *) * 3);
-		cmd.args[0] = ft_strdup(cmd.cmd);
-		cmd.args[1] = ft_strndup(line + j, i - j);
-		cmd.args[2] = NULL;
-	}
-	executor(&cmd);
-	free(cmd.cmd);
-	free(cmd.args[0]);
-	free(cmd.args);
+	ft_printf("cmd = %s\n", cmd->cmd);
 }
