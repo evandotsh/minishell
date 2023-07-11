@@ -67,12 +67,11 @@ void	add_args(t_cmd	*cmd, t_token *token)
 	while (token->next != NULL)
 	{
 		ft_printf("%s = token\n", token->token);
-		if (cmd == NULL)
-		{
+		if (new_args->cmd == NULL)
+		{	
 			ft_printf("CMD\n");
 			new_args->cmd = token->token;
-			if (token->next != NULL)
-				token = token->next;
+			ft_printf("cmd = %s\n", new_args->cmd);
 		}
 		else if (token->token[0] == '|'
 		|| token->token[0] == '<' || token->token[0] == '>')
@@ -85,11 +84,11 @@ void	add_args(t_cmd	*cmd, t_token *token)
 			i++;
 		}
 		ft_printf("rets12\n");
-		if (token->next != NULL)
+		if (token->next)
 			token = token->next;
 	}
 	ft_printf("rets13\n");
-	if (cmd == NULL)
+	if (new_args->cmd == NULL)
 	{
 		ft_printf("CMD\n");
 		new_args->cmd = token->token;
@@ -102,8 +101,6 @@ void	add_args(t_cmd	*cmd, t_token *token)
 	else if (token->token[0] != 0)
 		new_args->args[i] = ft_strdup(token->token);
 	cmd = new_args;
-	free (new_args->args);
-	free (new_args);
 }
 
 void	parser(t_token *token)
@@ -113,13 +110,9 @@ void	parser(t_token *token)
 
 	i = 0;
 	cmd = malloc(sizeof(*cmd));
-	cmd->cmd = token->token;
 	cmd->next = NULL;
 	ft_printf("cmd\n");
 	if (token->next != NULL)
-	{
-		token = token->next;
 		add_args(cmd, token);
-	}
 	ft_printf("cmd = %s\n", cmd->cmd);
 }
