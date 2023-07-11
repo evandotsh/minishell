@@ -112,7 +112,7 @@ t_token	*lexer(char *line)
 
 	i = 1;
 	line = add_spaces(line);
-	ft_printf("%s\n", line);
+	line = epur_str(line);
 	token = malloc(sizeof(*token) * 2);
 	if (!token)
 		exit (EXIT_FAILURE);
