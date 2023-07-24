@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:55:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/07/09 17:38:31 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/07/22 12:43:29 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ char				**ft_split_lexer(char const *s, char c);
 void				free_token(t_token *token);
 void				expander(t_cmd *cmd_list);
 char				*epur_str(char *str);
-void				add_args(t_cmd	*cmd, t_token *token);
+t_cmd				*add_args(t_token *token);
+void				add_redir(char	*str, t_cmd *new_args, t_token *token);
 
 #endif
