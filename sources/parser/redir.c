@@ -25,6 +25,7 @@ void	add_redir(char	*str, t_cmd *new_args, t_token *token)
 		redir->type = REDIR_PIPE;
 		if (token->next)
 				token = token->next;
+		new_args->next = add_args(token);
 	}
 	else if (str[0] == '<')
 	{

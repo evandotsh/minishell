@@ -30,7 +30,7 @@ t_cmd	*add_args(t_token *token)
 			new_args->cmd = ft_strdup(token->token);
 		else if (token->token[0] == '|'
 		|| token->token[0] == '<' || token->token[0] == '>')
-			add_redir(token->token, new_args, token);
+			return (add_redir(token->token, new_args, token), new_args);
 		else if (token->token[0] != 0)
 		{
 			new_args->args[i] = ft_strdup(token->token);
