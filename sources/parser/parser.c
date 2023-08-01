@@ -66,7 +66,4 @@ void	parser(t_token *token)
 	cmd->next = NULL;
 	cmd->next = add_args(token);
 	cmd = cmd->next;
-	ft_printf("%s\n", cmd->args[0]);
-	cmd = cmd->next;
-	ft_printf("%s\n", cmd->args[0]);
 }
