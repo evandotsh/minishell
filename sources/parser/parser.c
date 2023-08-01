@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:58:01 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/07/22 12:52:48 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:18:53 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_cmd	*add_args(t_token *token)
 			new_args->cmd = ft_strdup(token->token);
 		else if (token->token[0] == '|'
 		|| token->token[0] == '<' || token->token[0] == '>')
-			return (add_redir(token->token, new_args, token), new_args);
+			add_redir(token->token, new_args, token->next);
 		else if (token->token[0] != 0)
 		{
 			new_args->args[i] = ft_strdup(token->token);
@@ -47,7 +47,7 @@ t_cmd	*add_args(t_token *token)
 	}
 	else if (token->token[0] == '|'
 	|| token->token[0] == '<' || token->token[0] == '>')
-		add_redir(token->token, new_args, token);
+		return(add_redir(token->token, new_args, token->next), new_args);
 	else if (token->token[0] != 0)
 	{
 		new_args->args[i] = ft_strdup(token->token);
@@ -66,4 +66,7 @@ void	parser(t_token *token)
 	cmd->next = NULL;
 	cmd->next = add_args(token);
 	cmd = cmd->next;
+	ft_printf("%s\n", cmd->args[0]);
+	cmd = cmd->next;
+	ft_printf("%s\n", cmd->args[0]);
 }

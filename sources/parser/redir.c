@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 12:38:01 by sfernand          #+#    #+#             */
-/*   Updated: 2023/07/22 14:24:51 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/07/28 13:48:46 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,45 +23,44 @@ void	add_redir(char	*str, t_cmd *new_args, t_token *token)
 	{
 		redir->file = NULL;
 		redir->type = REDIR_PIPE;
-		if (token->next)
-				token = token->next;
+		if (new_args->redir == NULL)
+			new_args->redir = redir;
+		else 
+			new_args->redir->next = redir;
 		new_args->next = add_args(token);
 	}
 	else if (str[0] == '<')
 	{
-		token = token->next;
 		if (ft_strncmp(str, "<<", 2) == 0)
 		{
 			redir->file = ft_strdup(token->token);
 			redir->type = REDIR_HEREDOC;
-			if (token->next)
-				token = token->next;
 		}
 		else
 		{
 			redir->file = ft_strdup(token->token);
 			redir->type = REDIR_IN;
-			if (token->next)
-				token = token->next;
 		}
+		if (new_args->redir == NULL)
+			new_args->redir = redir;
+		else 
+			new_args->redir->next = redir;
 	}
 	else if (str[0] == '>')
 	{
-		token = token->next;
 		if (ft_strncmp(str, ">>", 2) == 0)
 		{
-			redir->file = ft_strdup(token->token);
+			redir->file = token->token;
 			redir->type = REDIR_APPEND;
-			if (token->next)
-				token = token->next;
 		}
 		else
 		{
-			redir->file = ft_strdup(token->token);
+			redir->file = token->token;
 			redir->type = REDIR_OUT;
-			if (token->next)
-				token = token->next;
 		}
+		if (new_args->redir == NULL)
+			new_args->redir = redir;
+		else 
+			new_args->redir->next = redir;
 	}
-	new_args->redir = redir;
 }
