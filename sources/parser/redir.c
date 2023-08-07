@@ -12,24 +12,27 @@
 
 #include "../../includes/minishell.h"
 
-void	add_redir(char	*str, t_cmd *new_args, t_token *token)
+void	add_redir3(char	*str, t_cmd *new_args, t_token *token, t_redir *redir)
 {
-	t_redir	*redir;
-
-	redir = malloc(sizeof(*redir) * 3);
-	redir->file = ft_strdup(str);
-	redir->next = NULL;
-	if (str[0] == '|')
+	if (ft_strncmp(str, ">>", 2) == 0)
 	{
-		redir->file = NULL;
-		redir->type = REDIR_PIPE;
-		if (new_args->redir == NULL)
-			new_args->redir = redir;
-		else 
-			new_args->redir->next = redir;
-		new_args->next = add_args(token);
+		redir->file = token->token;
+		redir->type = REDIR_APPEND;
 	}
-	else if (str[0] == '<')
+	else
+	{
+		redir->file = token->token;
+		redir->type = REDIR_OUT;
+	}
+	if (new_args->redir == NULL)
+		new_args->redir = redir;
+	else 
+		new_args->redir->next = redir;
+}
+
+void	add_redir2(char	*str, t_cmd *new_args, t_token *token, t_redir *redir)
+{
+	if (str[0] == '<')
 	{
 		if (ft_strncmp(str, "<<", 2) == 0)
 		{
@@ -48,19 +51,29 @@ void	add_redir(char	*str, t_cmd *new_args, t_token *token)
 	}
 	else if (str[0] == '>')
 	{
-		if (ft_strncmp(str, ">>", 2) == 0)
-		{
-			redir->file = token->token;
-			redir->type = REDIR_APPEND;
-		}
-		else
-		{
-			redir->file = token->token;
-			redir->type = REDIR_OUT;
-		}
+		add_redir3(str, new_args, token, redir);
+	}
+}
+
+void	add_redir(char	*str, t_cmd *new_args, t_token *token)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(*redir) * 3);
+	redir->file = ft_strdup(str);
+	redir->next = NULL;
+	if (str[0] == '|')
+	{
+		redir->file = NULL;
+		redir->type = REDIR_PIPE;
 		if (new_args->redir == NULL)
 			new_args->redir = redir;
 		else 
 			new_args->redir->next = redir;
+		new_args->next = add_args(token);
+	}
+	else if (str[0] == '<' || str[0] == '>')
+	{
+		add_redir2(str, new_args, token, redir);
 	}
 }

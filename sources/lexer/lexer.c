@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/06/29 11:58:17 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:32:10 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*add_spaces(char *str)
 	len = ft_strlen(str);
 	i = 0;
 	j = 0;
-	if (str == NULL)
+	if (str == NULL || len == 0)
 		return (NULL);
 	result = (char *)malloc((len * 2 + 1) * sizeof(char));
 	if (result == NULL)
@@ -111,8 +111,10 @@ t_token	*lexer(char *line)
 	char	**argv;
 
 	i = 1;
-	line = add_spaces(line);
 	line = epur_str(line);
+	line = add_spaces(line);
+	if (line != NULL)
+		line = epur_str(line);
 	token = malloc(sizeof(*token) * 2);
 	if (!token)
 		exit (EXIT_FAILURE);
