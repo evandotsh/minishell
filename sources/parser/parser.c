@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:58:01 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/07 14:28:54 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:11:36 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,4 @@ void	parser(t_token *token)
 	cmd->next = NULL;
 	cmd->next = add_args(token);
 	cmd = cmd->next;
-	ft_printf("%s\n", cmd->cmd);
-	cmd = cmd->next;
-	ft_printf("%s\n", cmd->cmd);
 }
