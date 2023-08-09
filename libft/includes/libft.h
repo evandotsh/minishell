@@ -30,7 +30,7 @@ int				ft_isascii(int c);
 int				ft_isdigit(int c);
 int				ft_isprint(int c);
 
-// Convertersrm
+// Converters
 int				ft_atoi(const char *str);
 char			*ft_itoa(int n);
 int				ft_tolower(int c);
