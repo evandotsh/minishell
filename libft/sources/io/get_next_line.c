@@ -93,10 +93,10 @@ static char	*fd_to_stash(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[OPEN_MAX];
+	static char	*stash[FOPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
 		return (0);
 	stash[fd] = fd_to_stash(fd, stash[fd]);
 	if (!stash[fd])

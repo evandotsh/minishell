@@ -28,8 +28,6 @@ unsigned int	count_size(unsigned int n)
 	int	i;
 
 	i = 0;
-	if (n < 0)
-		n *= -1;
 	while (n != 0)
 	{
 		n /= 10;
@@ -48,17 +46,11 @@ char	*ft_uitoa(unsigned int n)
 	num = n;
 	count = count_size(num);
 	i = 0;
-	if (num < 0 || count == 0)
+	if (count == 0)
 		count++;
 	dst = ft_strnew(count);
 	if (dst == NULL)
 		return (NULL);
-	if (num < 0)
-	{
-		num *= -1;
-		dst[0] = '-';
-		i++;
-	}
 	while (count-- > i)
 	{
 		dst[count] = (num % 10) + '0';

@@ -56,9 +56,7 @@ t_cmd	*add_args(t_token *token)
 void	parser(t_token *token)
 {
 	t_cmd	*cmd;
-	int		i;
 
-	i = 0;
 	cmd = malloc(sizeof(*cmd));
 	cmd->cmd = "test";
 	cmd->next = NULL;

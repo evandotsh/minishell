@@ -109,8 +109,6 @@ char	**execute(char **split, char const *s, char c, int index)
 
 char	**ft_split_lexer(char const *s, char c)
 {
-	size_t	i;
-	size_t	j;
 	int		index;
 	char	**split;
 
@@ -119,8 +117,6 @@ char	**ft_split_lexer(char const *s, char c)
 	split = malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!s || !split)
 		return (NULL);
-	i = 0;
-	j = 0;
 	index = -1;
 	return (execute(split, s, c, index));
 }
