@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/24 12:35:00 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:38:43 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,6 @@ int         sh_echo(t_ast_node *node);
 int         sh_env(t_env *env);
 int         sh_pwd(void);
 int         sh_unset(t_ast_node *node, t_env *env);
+char        **env_to_envp_format(t_env *env);
+char        *get_exec_path_from_env(char *program, t_env *env);
 #endif

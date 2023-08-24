@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 07:08:35 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/24 12:45:43 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:38:13 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,55 @@ void    env_remove(t_env *env, char *key)
         }
         tmp = tmp->next;
     }
+}
+
+char    **env_to_envp_format(t_env *env)
+{
+    char **envp;
+    t_env *tmp;
+    int i;
+
+    i = 0;
+    tmp = env;
+    while (tmp)
+    {
+        i++;
+        tmp = tmp->next;
+    }
+    envp = malloc(sizeof(char *) * (i + 1));
+    if (!envp)
+        return (NULL);
+    i = 0;
+    tmp = env;
+    while (tmp)
+    {
+        envp[i] = ft_strjoin(tmp->key, "=");
+        envp[i] = ft_strjoin(envp[i], tmp->value);
+        i++;
+        tmp = tmp->next;
+    }
+    envp[i] = NULL;
+    return (envp);
+}
+
+char    *get_exec_path_from_env(char *program, t_env *env)
+{
+    char *path;
+    char **paths;
+    int i;
+
+    path = env_get(env, "PATH");
+    if (!path)
+        return (NULL);
+    paths = ft_split(path, ':');
+    i = 0;
+    while (paths[i])
+    {
+        paths[i] = ft_strjoin(paths[i], "/");
+        paths[i] = ft_strjoin(paths[i], program);
+        if (access(paths[i], F_OK) == 0)
+            return (paths[i]);
+        i++;
+    }
+    return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/24 12:41:41 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/24 16:39:03 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void executor(t_ast_node *node, t_env *env)
 			//	sh_exit(node);
 			else
 			{
-				execve(args[0], args, NULL);
+				execve(get_exec_path_from_env(args[0], env), args, env_to_envp_format(env));
 				perror("execve");
 				exit(EXIT_FAILURE);
 			}
