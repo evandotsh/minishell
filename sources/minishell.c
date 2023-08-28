@@ -100,14 +100,24 @@ int main(int argc, char **argv, char **envp)
     {
         printf("\n%sminishell$ \n%s", C_PURPLE, C_YELLOW);
         line = readline(PROMPT C_RESET);
-        token = lexer(line);
-        cmds = parser(token);
-        if (debug)
+        ft_printf("%s\n", line);
+        if (line != NULL && line[0] != '\0')
         {
-            print_token(token);
-            print_ast_node(cmds, 0);
+            token = lexer(line);
+            cmds = parser(token);
+            if (debug)
+            {
+                print_token(token);
+                print_ast_node(cmds, 0);
+            }
+            executor(cmds, env);
         }
-        executor(cmds, env);
+        if (line == NULL)
+        {
+            ft_printf("Exit\n");
+            free(line);
+            exit(0);
+        }
         free(line);
     }
     free(line);
