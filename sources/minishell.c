@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/24 12:44:09 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:57:49 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int main(int argc, char **argv, char **envp)
     if (argc == 2 && strcmp(argv[1], "--debug") == 0)
         debug = 1;
     env = env_from_parent(envp);
+    (void) env;
     while (TRUE)
     {
         printf("\n%sminishell$ \n%s", C_PURPLE, C_YELLOW);
@@ -107,8 +108,10 @@ int main(int argc, char **argv, char **envp)
             print_token(token);
             print_ast_node(cmds, 0);
         }
-        executor(cmds, env);
-        free(line);
+        free_all_nodes(cmds);
+        //executor(cmds, env);
+        //free_all_nodes(cmds);
+        //free(line);
     }
     free(line);
     return (0);

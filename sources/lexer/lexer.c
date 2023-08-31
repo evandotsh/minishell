@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/22 16:14:48 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:49:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,17 @@ t_token *lexer(char *line)
     }
     free(line);
     return (token);
+}
+
+void    free_all_tokens(t_token *tokens)
+{
+    t_token *tmp;
+
+    while (tokens)
+    {
+        tmp = tokens;
+        tokens = tokens->next;
+        free(tmp->token);
+        free(tmp);
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/23 16:50:53 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:49:31 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,32 @@ t_ast_node *parser(t_token *tokens)
         tokens = tokens->next;
     }
     cmd_node->cmd_args[cmd_node->cmd_arg_count] = NULL;
+    free_all_tokens(tokens);
     return cmd_node;
+}
+
+void    free_all_nodes(t_ast_node *nodes)
+{
+    if (nodes == NULL)
+    {
+        return;
+    }
+    if (nodes->type == ND_CMD)
+    {
+        free(nodes->cmd_name);
+        for (int i = 0; i < nodes->cmd_arg_count; i++)
+        {
+            free(nodes->cmd_args[i]->arg_value);
+            free(nodes->cmd_args[i]);
+        }
+        free(nodes->cmd_args);
+        free(nodes->cmd_stdin_file);
+        free(nodes->cmd_stdout_file);
+    }
+    else if (nodes->type == ND_PIPE)
+    {
+        free_all_nodes(nodes->pipe_lhs);
+        free_all_nodes(nodes->pipe_rhs);
+    }
+    free(nodes);
 }

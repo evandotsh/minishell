@@ -6,13 +6,13 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/08/24 12:29:39 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/08/26 17:53:56 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra -g
+CFLAGS		=	-Wall -Werror -Wextra -g -O0
 
 SRCS		=	$(addprefix sources/, \
 					minishell.c parser/parser.c lexer/lexer.c \
