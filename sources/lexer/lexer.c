@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/01 15:27:09 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/01 23:06:31 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	add_token(t_token *token, char *str)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		exit(EXIT_FAILURE);
+	if (str[0] == 0)
+		return;
 	new_token->token = str;
 	new_token->next = NULL;
 	while (token->next != NULL)

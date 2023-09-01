@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:28:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/01 15:59:07 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/01 23:12:11 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ char	*word_dup(const char *str, int start, int finish)
 	i = 0;
 	word = malloc((finish - start + 1) * sizeof(char));
 	while (start < finish)
+	{
+		if (str[start] == 34 || str[start] == 39)
+			start++;
 		word[i++] = str[start++];
+	}
 	word[i] = '\0';
+	word = ft_strtrim_lexer(word);
+	word = ft_epur_str(word);
 	return (word);
 }
 
