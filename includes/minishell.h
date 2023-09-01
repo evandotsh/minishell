@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/24 16:38:43 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:20:42 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define C_CYAN "\033[0;36m"
 
 // Misc
-# define PATH_MAX 4096
+//# define PATH_MAX 4096
 
 typedef struct s_token
 {
@@ -95,7 +95,7 @@ typedef struct s_env
 t_token     *lexer(char *line);
 t_ast_node  *parser(t_token *tokens);
 char        **ft_split_lexer(char const *s, char c);
-char        *epur_str(char *str);
+char        *ft_epur_str(char *str);
 void        executor(t_ast_node *node, t_env *env);
 char        *get_node_arg(t_ast_node *node, int index);
 int         get_node_arg_count(t_ast_node *node);
@@ -111,4 +111,5 @@ int         sh_pwd(void);
 int         sh_unset(t_ast_node *node, t_env *env);
 char        **env_to_envp_format(t_env *env);
 char        *get_exec_path_from_env(char *program, t_env *env);
+char        *ft_strtrim_lexer(const char *str);
 #endif
