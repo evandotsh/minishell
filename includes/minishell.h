@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/01 15:20:42 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/04 23:49:41 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,5 @@ int         sh_unset(t_ast_node *node, t_env *env);
 char        **env_to_envp_format(t_env *env);
 char        *get_exec_path_from_env(char *program, t_env *env);
 char        *ft_strtrim_lexer(const char *str);
+void        quote(char *str, int i, int j, char *result);
 #endif
