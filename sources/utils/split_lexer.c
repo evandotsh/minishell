@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:28:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/01 23:12:11 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:51:40 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,7 @@ char	*word_dup(const char *str, int start, int finish)
 	i = 0;
 	word = malloc((finish - start + 1) * sizeof(char));
 	while (start < finish)
-	{
-		if (str[start] == 34 || str[start] == 39)
-			start++;
 		word[i++] = str[start++];
-	}
 	word[i] = '\0';
 	word = ft_strtrim_lexer(word);
 	word = ft_epur_str(word);
@@ -62,10 +58,7 @@ int	verif_quote(const char *s, size_t i)
 		while (s[i] != 39)
 		{
 			if (i > ft_strlen(s))
-			{
-				ft_printf("Syntax Error\n");
-				return (0);
-			}
+				return (ft_printf("Syntax Error\n"), 0);
 			i++;
 		}
 	}
@@ -75,10 +68,7 @@ int	verif_quote(const char *s, size_t i)
 		while (s[i] != 34)
 		{
 			if (i > ft_strlen(s))
-			{
-				ft_printf("Syntax Error\n");
-				return (0);
-			}
+				return (ft_printf("Syntax Error\n"), 0);
 			i++;
 		}
 	}

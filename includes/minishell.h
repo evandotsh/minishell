@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/07 07:39:48 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:36:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,5 @@ int         sh_export(t_ast_node *node, t_env *env);
 int         sh_exit(t_ast_node *node);
 int         is_valid_identifier(char *str);
 void		expander(t_ast_node *node, t_env *env);
+void        quote(char *str, int i, int j, char *result);
 #endif

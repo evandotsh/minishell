@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/07 07:53:37 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:35:28 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	add_token(t_token *token, char *str)
 	if (!new_token)
 		exit(EXIT_FAILURE);
 	if (str[0] == 0)
-		return;
+		return ;
 	new_token->token = str;
 	new_token->next = NULL;
 	while (token->next != NULL)
@@ -33,50 +33,16 @@ void	add_token(t_token *token, char *str)
 
 char	*check_redir(char *str, int i, int j, char *result)
 {
-	int	x;
-	int a;
-
-	x = 0;
-	a = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 34)
-		{
-			if (a != 1)
-			{
-				if (x == 1)
-				{
-					result[j++] = str[i++];
-					x = 0;
-				}
-				else
-					x = 1;
-				result[j++] = ' ';
-			}
-		}
-		else if (str[i] == 39)
-		{
-			if (x != 1)
-			{
-				if (a == 1)
-				{
-					result[j++] = str[i++];
-					a = 0;
-				}
-				else
-					a = 1;
-				result[j++] = ' ';
-			}
-		}
+		if (str[i] == 34 || str[i] == 39)
+			quote(str, i, j, result);
 		if (str[i] == '|' || (str[i] == '>' && str[i - 1] != '>')
 			|| (str[i] == '<' && str[i - 1] != '<'))
 		{
 			result[j++] = ' ';
 			if (str[i + 2] == '>' || str[i + 2] == '<')
-			{
-				ft_printf("syntax error\n");
 				return (NULL);
-			}
 		}
 		if (str[i - 1] == '|' || (str[i - 1] == '>' && str[i] != '>')
 			|| (str[i - 1] == '<' && str[i] != '<'))
@@ -84,6 +50,7 @@ char	*check_redir(char *str, int i, int j, char *result)
 		result[j++] = str[i++];
 	}
 	result[j] = '\0';
+	result = ft_strtrim_lexer(result);
 	return (result);
 }
 
@@ -106,30 +73,8 @@ char	*add_spaces(char *str)
 	return (result);
 }
 
-t_token	*lexer(char *line)
+t_token	*lexer2(char *line, t_token *token, int i, char **argv)
 {
-	t_token	*token;
-	int		i;
-	char	**argv;
-
-	i = 0;
-	line = ft_strtrim_lexer(line);
-	line = ft_epur_str(line);
-	//ft_printf("\nline = %s\n", line);
-	line = add_spaces(line);
-	if (line != NULL)
-		line = ft_epur_str(line);
-	token = malloc(sizeof(*token) * 2);
-	if (!token)
-		exit (EXIT_FAILURE);
-	if (line == NULL)
-	{
-		token->token = NULL;
-		token->next = NULL;
-		return (token);
-	}
-	argv = ft_split_lexer(line, ' ');
-	//ft_printf("%s\n", argv[i]);
 	if (!argv)
 	{
 		token->token = NULL;
@@ -143,25 +88,34 @@ t_token	*lexer(char *line)
 		while (argv[i++])
 		{
 			if (argv[i] != NULL)
-			{
-        		//ft_printf("argv[%i] = %s\n", i, argv[i]);
 				add_token(token, argv[i]);
-			}
 		}
 	}
 	free(line);
 	return (token);
 }
 
-void	free_all_tokens(t_token *token)
+t_token	*lexer(char *line)
 {
-	t_token	*tmp;
+	t_token	*token;
+	int		i;
+	char	**argv;
 
-	while (token != NULL)
+	i = 0;
+	line = ft_strtrim_lexer(line);
+	line = ft_epur_str(line);
+	line = add_spaces(line);
+	if (line != NULL)
+		line = ft_epur_str(line);
+	token = malloc(sizeof(*token) * 2);
+	if (!token)
+		exit (EXIT_FAILURE);
+	if (line == NULL)
 	{
-		tmp = token;
-		token = token->next;
-		free(tmp->token);
-		free(tmp);
+		token->token = NULL;
+		token->next = NULL;
+		return (token);
 	}
+	argv = ft_split_lexer(line, ' ');
+	return (lexer2(line, token, i, argv));
 }
