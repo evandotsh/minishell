@@ -20,32 +20,50 @@ int	ft_isspace(const char str)
 		return (0);
 }
 
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	char		*d;
+	const char	*s;
+	size_t		i;
+
+	d = dest;
+	s = src;
+	i = 0;
+	while (i < n && *s != '\0')
+	{
+		*d++ = *s++;
+		i++;
+	}
+	while (i < n)
+	{
+		*d++ = '\0';
+		i++;
+	}
+	return (dest);
+}
+
 char	*ft_strtrim_lexer(const char *str)
 {
-	char		*result;
-	size_t		length;
+	const char	*start;
 	const char	*end;
+	size_t		length;
+	char		*result;
 
-	length = 0;
+	start = str;
 	if (str == NULL)
 		return (NULL);
-	while (ft_isspace(*str))
-		str++;
-	if (*str == '\0')
-	{
-		result = (char *)malloc(1);
-		if (result != NULL)
-			result[0] = '\0';
-		return (result);
-	}
-	end = str + strlen(str) - 1;
-	while (end > str && ft_isspace(*end))
+	while (*start && ft_isspace(*start))
+		start++;
+	if (*start == '\0')
+		return (ft_strdup(""), NULL);
+	end = start + ft_strlen(start) - 1;
+	while (end > start && ft_isspace(*end))
 		end--;
-	length = end - str + 1;
+	length = end - start + 1;
 	result = (char *)malloc(length + 1);
 	if (result != NULL)
 	{
-		strncpy(result, str, length);
+		ft_strncpy(result, start, length);
 		result[length] = '\0';
 	}
 	return (result);
