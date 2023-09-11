@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 23:41:07 by sfernand          #+#    #+#             */
-/*   Updated: 2023/09/05 23:10:32 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/11 02:21:45 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,12 @@ void	quote(char *str, int i, int j, char *result)
 
 	x = 0;
 	a = 0;
-	if (str[i] == 34)
-	{
-		if (a != 1)
-		{
-			if (x == 1)
-			{
-				result[j++] = str[i++];
-				x = 0;
-			}
-			else
-				x = 1;
-			result[j++] = ' ';
-		}
-	}
-	else if (str[i] == 39)
-	{
-		if (x != 1)
-		{
-			if (a == 1)
-			{
-				result[j++] = str[i++];
-				a = 0;
-			}
-			else
-				a = 1;
-			result[j++] = ' ';
-		}
-	}
+	if (str[i] == 34 && (a != 1 || x == 1))
+		x = 1 - x;
+	else if (str[i] == 39 && (x != 1 || a == 1))
+		a = 1 - a;
+	if ((str[i] != 34 && str[i] != 39) || (a == 1 || x == 1))
+		result[j++] = ' ';
+	if (str[i] != ' ')
+		result[j++] = str[i];
 }

@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/04 23:50:29 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/11 02:23:17 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*check_redir(char *str, int i, int j, char *result)
 		result[j++] = str[i++];
 	}
 	result[j] = '\0';
+	result = ft_strtrim_lexer(result);
 	return (result);
 }
 
