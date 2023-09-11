@@ -6,61 +6,75 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 07:38:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/07 07:42:33 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 13:34:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void expander(t_ast_node *node, t_env *env) {
-    if (node == NULL) {
-        return;
-    }
+void	expander(t_ast_node *node, t_env *env)
+{
+	t_env	*curr_env;
+	char	*arg;
+	char	*key;
+	char	*key_with_dollar;
+	char	*ptr;
+	char	*new_arg;
+	int		i;
 
-    if (node->type == ND_CMD) {
-        for (int i = 0; i < node->cmd_arg_count; i++) {
-            char *arg = node->cmd_args[i]->arg_value;
-
-            // Check if argument is enclosed in single quotes
-            if (arg[0] == '\'') {
-                continue;
-            } else
+	if (node == NULL)
+	{
+		return ;
+	}
+	if (node->type == ND_CMD)
+	{
+		i = 0;
+		while (i < node->cmd_arg_count)
+		{
+			arg = node->cmd_args[i]->arg_value;
+			if (arg[0] == '\"' && arg[strlen(arg) - 1] == '\"')
 			{
-				printf("arg: %c\n", arg[0]);
+				memmove(arg, arg + 1, strlen(arg) - 2);
+				arg[strlen(arg) - 2] = '\0';
 			}
-
-            t_env *curr_env = env;
-            while (curr_env != NULL) {
-                char *key = curr_env->key;
-                char *key_with_dollar = malloc(strlen(key) + 2);
-                strcpy(key_with_dollar, "$");
-                strcat(key_with_dollar, key);
-
-                // Loop until all instances of key_with_dollar are replaced in arg
-                char *ptr;
-                while ((ptr = strstr(arg, key_with_dollar)) != NULL) {
-                   
-                    char *new_arg = calloc(strlen(arg) + strlen(curr_env->value) + 1, sizeof(char));
-
-                    strncpy(new_arg, arg, ptr - arg);
-                    strcat(new_arg, curr_env->value);
-                    strcat(new_arg, ptr + strlen(key_with_dollar));
-
-                    //free(arg);
-                    arg = new_arg;
-                }
-
-                //free(key_with_dollar);
-                curr_env = curr_env->next;
-            }
-            
-            // Update the argument value with the expanded value
-            //free(node->cmd_args[i]->arg_value);
-            node->cmd_args[i]->arg_value = arg;
-
-        }
-    } else if (node->type == ND_PIPE) {
-        expander(node->pipe_lhs, env);
-        expander(node->pipe_rhs, env);
-    }
+			if (arg[0] == '\'' && arg[strlen(arg) - 1] == '\'')
+			{
+				memmove(arg, arg + 1, strlen(arg) - 2);
+				arg[strlen(arg) - 2] = '\0';
+				i++;
+				continue ;
+			}
+			curr_env = env;
+			while (curr_env != NULL)
+			{
+				key = curr_env->key;
+				key_with_dollar = malloc(strlen(key) + 2);
+				strcpy(key_with_dollar, "$");
+				strcat(key_with_dollar, key);
+				ptr = strstr(arg, key_with_dollar);
+				if (ptr != NULL)
+				{
+					new_arg = calloc(strlen(arg) + strlen(curr_env->value) + 1,
+							sizeof(char));
+					strncpy(new_arg, arg, ptr - arg);
+					strcat(new_arg, curr_env->value);
+					strcat(new_arg, ptr + strlen(key_with_dollar));
+					free(arg);
+					arg = new_arg;
+				}
+				free(key_with_dollar);
+				curr_env = curr_env->next;
+			}
+			node->cmd_args[i]->arg_value = arg;
+			i++;
+		}
+	}
+	else if (node->type == ND_PIPE)
+	{
+		expander(node->pipe_lhs, env);
+		expander(node->pipe_rhs, env);
+	}
 }
