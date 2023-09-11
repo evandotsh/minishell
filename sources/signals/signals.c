@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/24 06:57:23 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/06 12:31:43 by evmorvan         ###   ########.fr       */
+/*   Created: 2023/09/04 14:24:09 by evmorvan          #+#    #+#             */
+/*   Updated: 2023/09/06 14:32:01 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int sh_echo(t_ast_node *node)
+void sh_sigint(int sig)
 {
-    int is_n;
-    int i;
+    (void)sig;
+    printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
 
-    is_n = 0;
-    i = 0;
-    if (ft_strncmp(get_node_arg(node, 0), "-n", 3) == 0)
-        is_n = 1;
+void sh_sigquit(int sig)
+{
+    (void)sig;
+    printf("Quit: 3\n");
+}
 
-    while (get_node_arg(node, i + is_n))
-    {
-        printf("%s", get_node_arg(node, i + is_n));
-        if (get_node_arg(node, i + is_n + 1))
-            printf(" ");
-        i++;
-    }
-    if (!is_n)
-        printf("\n");
-    return (0);
+void sh_signals(t_node *node)
+{
+    signal(SIGINT, sh_sigint);
+    signal(SIGQUIT, sh_sigquit);
 }

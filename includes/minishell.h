@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/31 13:40:10 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/07 07:39:48 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define C_CYAN "\033[0;36m"
 
 // Misc
-# define PATH_MAX 4096
+//# define PATH_MAX 4096
 
 typedef struct s_token
 {
@@ -78,6 +78,9 @@ typedef struct s_ast_node {
   // ARG node
   char *arg_value;
 
+  //PID
+  int cmd_pid;
+
   // PIPE node
   t_ast_node *pipe_lhs;
   t_ast_node *pipe_rhs;
@@ -95,7 +98,7 @@ typedef struct s_env
 t_token     *lexer(char *line);
 t_ast_node  *parser(t_token *tokens);
 char        **ft_split_lexer(char const *s, char c);
-char        *epur_str(char *str);
+char        *ft_epur_str(char *str);
 void        executor(t_ast_node *node, t_env *env);
 char        *get_node_arg(t_ast_node *node, int index);
 int         get_node_arg_count(t_ast_node *node);
@@ -112,5 +115,11 @@ int         sh_unset(t_ast_node *node, t_env *env);
 char        **env_to_envp_format(t_env *env);
 char        *get_exec_path_from_env(char *program, t_env *env);
 void        free_all_nodes(t_ast_node *nodes);
-void        free_all_tokens(t_token *tokens);
+void        free_all_tokens(t_token *token);
+char        *ft_strtrim_lexer(const char *str);
+int         sh_cd(t_ast_node *node, t_env *env);
+int         sh_export(t_ast_node *node, t_env *env);
+int         sh_exit(t_ast_node *node);
+int         is_valid_identifier(char *str);
+void		expander(t_ast_node *node, t_env *env);
 #endif

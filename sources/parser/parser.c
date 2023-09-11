@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/26 17:49:31 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/02 12:53:33 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_ast_node *make_arg_node(char *arg_value) {
 t_ast_node *parser(t_token *tokens)
 {
     t_ast_node *cmd_node;
-    
+
     // Handle NULL case
     if (tokens == NULL)
     {
@@ -89,6 +89,7 @@ t_ast_node *parser(t_token *tokens)
             pipe_node->pipe_rhs = parser(tokens);
             return pipe_node;
         }
+        // ft_printf("\n token = %s \n", tokens->token);
         tokens = tokens->next;
     }
     cmd_node->cmd_args[cmd_node->cmd_arg_count] = NULL;

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/08/26 17:57:49 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:28:43 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ void print_ast_node(t_ast_node *node, int depth)
     // print node type
     switch (node->type)
     {
-    case ND_CMD:
-        printf("CMD");
-        break;
-    case ND_ARG:
-        printf("ARG");
-        break;
-    case ND_PIPE:
-        printf("PIPE");
-        break;
-    default:
-        printf("UNKNOWN");
-        break;
+   		case ND_CMD:
+   		    printf("CMD");
+   		    break;
+   		case ND_ARG:
+   		    printf("ARG");
+   		    break;
+   		case ND_PIPE:
+   		    printf("PIPE");
+   		    break;
+   		default:
+   		    printf("UNKNOWN");
+   		    break;
     }
 
     // print additional information
@@ -101,12 +101,24 @@ int main(int argc, char **argv, char **envp)
     {
         printf("\n%sminishell$ \n%s", C_PURPLE, C_YELLOW);
         line = readline(PROMPT C_RESET);
-        token = lexer(line);
-        cmds = parser(token);
-        if (debug)
+        ft_printf("%s\n", line);
+        if (line != NULL && line[0] != '\0')
         {
-            print_token(token);
-            print_ast_node(cmds, 0);
+            token = lexer(line);
+            cmds = parser(token);
+            if (debug)
+            {
+                print_token(token);
+                print_ast_node(cmds, 0);
+            }
+			expander(cmds, env);
+            executor(cmds, env);
+        }
+        if (line == NULL)
+        {
+            ft_printf("Exit\n");
+            free(line);
+            exit(0);
         }
         free_all_nodes(cmds);
         //executor(cmds, env);
