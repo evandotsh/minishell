@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 12:05:15 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/09 15:23:09 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:40:08 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	ft_hex(unsigned int num, int is_lower)
 	}
 }
 
-int	ft_puthex(unsigned int num, int is_lower)
+int	pf_puthex_fd(unsigned int num, int is_lower, int fd)
 {
 	if (num == 0)
-		return (write(1, "0", 1));
+		return (write(fd, "0", 1));
 	else
 		ft_hex(num, is_lower);
 	return (ft_hexlen(num));

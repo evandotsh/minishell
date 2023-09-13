@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 13:52:10 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/17 17:40:33 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:40:58 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,22 @@ char			*ft_itoa(int n);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
 
-// I/O
+// I/O`
 int				ft_printf(const char *fmt, ...);
-int				ft_putnbr(int nb);
-int				ft_putstr(char *s);
-int				ft_putchar(char c);
-int				ft_putuint(unsigned int nb);
-int				ft_putptr(unsigned long long ptr);
-int				ft_puthex(unsigned int num, int is_lower);
+int				ft_printf_fd(int fd, const char *fmt, ...);
+int				pf_putnbr_fd(int nb, int fd);
+int				pf_putstr_fd(char *s, int fd);
+int				pf_putchar_fd(char c, int fd);
+int				pf_putuint_fd(unsigned int nb, int fd);
+int				pf_putptr_fd(unsigned long long ptr, int fd);
+int				pf_puthex_fd(unsigned int num, int is_lower, int fd);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_putstr_fd(char *s, int fd);
 char			*gnl_strchr(char *s, int c);
 char			*gnl_strjoin(char *s1, char *s2);
+int				pf_formatter_fd(int fd, va_list args, char fmt);
 char			*get_next_line(int fd);
 
 // Lists

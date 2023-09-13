@@ -6,37 +6,37 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 18:29:42 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/09 15:23:14 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:38:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-int	ft_formatter(va_list args, char fmt)
+int	pf_formatter_fd(int fd, va_list args, char fmt)
 {
 	int	len;
 
 	len = 0;
 	if (fmt == 'c')
-		len += ft_putchar((char) va_arg(args, int));
+		len += pf_putchar_fd((char) va_arg(args, int), fd);
 	if (fmt == 's')
-		len += ft_putstr(va_arg(args, char *));
+		len += pf_putstr_fd(va_arg(args, char *), fd);
 	if (fmt == 'p')
-		len += ft_putptr(va_arg(args, unsigned long long));
+		len += pf_putptr_fd(va_arg(args, unsigned long long), fd);
 	if (fmt == 'd' || fmt == 'i')
-		len += ft_putnbr(va_arg(args, int));
+		len += pf_putnbr_fd(va_arg(args, int), fd);
 	if (fmt == 'u')
-		len += ft_putuint(va_arg(args, unsigned int));
+		len += pf_putuint_fd(va_arg(args, unsigned int), fd);
 	if (fmt == 'x')
-		len += ft_puthex(va_arg(args, unsigned int), 1);
+		len += pf_puthex_fd(va_arg(args, unsigned int), 1, fd);
 	if (fmt == 'X')
-		len += ft_puthex(va_arg(args, unsigned int), 0);
+		len += pf_puthex_fd(va_arg(args, unsigned int), 0, fd);
 	if (fmt == '%')
-		len += ft_putchar('%');
+		len += pf_putchar_fd('%', fd);
 	return (len);
 }
 
-int	ft_printf(const char *fmt, ...)
+int	ft_printf_fd(int fd, const char *fmt, ...)
 {
 	va_list	args;
 	int		i;
@@ -48,9 +48,32 @@ int	ft_printf(const char *fmt, ...)
 	while (fmt[i] != '\0')
 	{
 		if (fmt[i] == '%')
-			len += ft_formatter(args, fmt[++i]);
+			len += pf_formatter_fd(fd, args, fmt[++i]);
 		else
-			len += ft_putchar(fmt[i]);
+			len += pf_putchar_fd(fmt[i], fd);
+		i++;
+	}
+	va_end(args);
+	return (len);
+}
+
+int	ft_printf(const char *fmt, ...)
+{
+	va_list	args;
+	int		i;
+	int		len;
+	int		fd;
+
+	i = 0;
+	len = 0;
+	fd = 0;
+	va_start(args, fmt);
+	while (fmt[i] != '\0')
+	{
+		if (fmt[i] == '%')
+			len += pf_formatter_fd(fd, args, fmt[++i]);
+		else
+			len += pf_putchar_fd(fmt[i], fd);
 		i++;
 	}
 	va_end(args);

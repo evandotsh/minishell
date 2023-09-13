@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/11 14:07:05 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:08:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_ast_node
 	int						cmd_pipe_write;
 	char					*arg_value;
 	int						cmd_pid;
+	int						cmd_termination_code;
 	t_ast_node				*pipe_lhs;
 	t_ast_node				*pipe_rhs;
 
@@ -112,4 +113,10 @@ int							sh_exit(t_ast_node *node);
 int							is_valid_identifier(char *str);
 void						expander(t_ast_node *node, t_env *env);
 void						quote(char *str, int i, int j, char *result);
+void						print_ast_node(t_ast_node *node, int depth);
+void						execute_command(t_ast_node *node, t_env *env);
+void						execute_pipe(t_ast_node *node, t_env *env);
+void						setup_redirections(t_ast_node *node);
+void						launch_process(t_ast_node *node, t_env *env);
+char						**build_argv(t_ast_node *node);
 #endif

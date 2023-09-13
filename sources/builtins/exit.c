@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 13:59:55 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/11 14:04:16 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:07:21 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	sh_exit(t_ast_node *node)
 
 	if (get_node_arg_count(node) > 1)
 	{
-		printf("exit: too many arguments\n");
+		ft_printf_fd(STDERR_FILENO, "minishell: exit: too many arguments\n");
 		exit_code = 255;
 	}
 	if (get_node_arg(node, 0))
@@ -41,8 +41,9 @@ int	sh_exit(t_ast_node *node)
 			exit_code = ft_atoi(get_node_arg(node, 0));
 		else
 		{
-			printf("exit: %s: numeric argument required\n", get_node_arg(node,
-					0));
+			ft_printf_fd(STDERR_FILENO,
+				"minishell: exit: %s: numeric argument required\n",
+				get_node_arg(node, 0));
 			return (255);
 		}
 	}

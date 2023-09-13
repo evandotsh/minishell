@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:28:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/07 15:51:40 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:10:37 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	verif_quote(const char *s, size_t i)
 		while (s[i] != 39)
 		{
 			if (i > ft_strlen(s))
-				return (ft_printf("Syntax Error\n"), 0);
+				return (ft_printf_fd(2, "minishell: Syntax Error\n"), 0);
 			i++;
 		}
 	}
@@ -68,7 +68,7 @@ int	verif_quote(const char *s, size_t i)
 		while (s[i] != 34)
 		{
 			if (i > ft_strlen(s))
-				return (ft_printf("Syntax Error\n"), 0);
+				return (ft_printf_fd(2, "minishell: Syntax Error\n"), 0);
 			i++;
 		}
 	}

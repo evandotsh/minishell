@@ -6,13 +6,13 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 11:51:03 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/09 15:23:11 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:34:57 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/libft.h"
 
-char	*ft_strnew(size_t size)
+char	*pf_strnew(size_t size)
 {
 	char	*str;
 
@@ -36,7 +36,7 @@ unsigned int	count_size(unsigned int n)
 	return (i);
 }
 
-char	*ft_uitoa(unsigned int n)
+char	*pf_uitoa(unsigned int n)
 {
 	char			*dst;
 	unsigned int	count;
@@ -48,7 +48,7 @@ char	*ft_uitoa(unsigned int n)
 	i = 0;
 	if (count == 0)
 		count++;
-	dst = ft_strnew(count);
+	dst = pf_strnew(count);
 	if (dst == NULL)
 		return (NULL);
 	while (count-- > i)
@@ -59,24 +59,24 @@ char	*ft_uitoa(unsigned int n)
 	return (dst);
 }
 
-int	ft_putuint(unsigned int nb)
+int	pf_putuint_fd(unsigned int nb, int fd)
 {
 	char	*str;
 	int		len;
 
-	str = ft_uitoa(nb);
-	len = ft_putstr(str);
+	str = pf_uitoa(nb);
+	len = pf_putstr_fd(str, fd);
 	free(str);
 	return (len);
 }
 
-int	ft_putnbr(int nb)
+int	pf_putnbr_fd(int nb, int fd)
 {
 	char	*str;
 	int		len;
 
 	str = ft_itoa(nb);
-	len = ft_putstr(str);
+	len = pf_putstr_fd(str, fd);
 	free(str);
 	return (len);
 }

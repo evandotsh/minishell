@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/11 13:36:55 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:02:39 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_ast_node	*parser(t_token *tokens)
 {
 	t_ast_node	*cmd_node;
 	t_ast_node	*pipe_node;
+	t_token		*prev_token;
 
 	if (tokens == NULL)
 		return (NULL);
@@ -56,21 +57,29 @@ t_ast_node	*parser(t_token *tokens)
 		else if (strcmp(tokens->token, "<") == 0 || strcmp(tokens->token,
 				">") == 0 || strcmp(tokens->token, ">>") == 0)
 		{
+			prev_token = tokens;
 			tokens = tokens->next;
 			if (tokens == NULL)
 			{
-				fprintf(stderr, "Invalid syntax: Expected filename after ");
-				fprintf(stderr, "redirection operator\n");
+				ft_printf_fd(STDERR_FILENO, "minishell: parse error near `\n'\n");
 				return (NULL);
 			}
-			if (strcmp(tokens->token, "<") == 0)
+			if (strcmp(prev_token->token, "<") == 0)
 			{
 				cmd_node->cmd_stdin_source = 0;
 				cmd_node->cmd_stdin_file = ft_strdup(tokens->token);
 			}
-			else
+			else if (strcmp(prev_token->token, "<<") == 0)
+			{
+			}
+			else if (strcmp(prev_token->token, ">") == 0)
 			{
 				cmd_node->cmd_stdout_dest = 1;
+				cmd_node->cmd_stdout_file = ft_strdup(tokens->token);
+			}
+			else if (strcmp(prev_token->token, ">>") == 0)
+			{
+				cmd_node->cmd_stdout_dest = 2;
 				cmd_node->cmd_stdout_file = ft_strdup(tokens->token);
 			}
 		}
@@ -82,14 +91,13 @@ t_ast_node	*parser(t_token *tokens)
 			tokens = tokens->next;
 			if (tokens == NULL)
 			{
-				fprintf(stderr, "Invalid syntax: Expected command ");
-				fprintf(stderr, "after pipe operator\n");
+				free(pipe_node);
+				ft_printf_fd(2, "minishell: Expected command after pipe\n");
 				return (NULL);
 			}
 			pipe_node->pipe_rhs = parser(tokens);
 			return (pipe_node);
 		}
-		//ft_printf("\n token = %s \n", tokens->token);
 		tokens = tokens->next;
 	}
 	cmd_node->cmd_args[cmd_node->cmd_arg_count] = NULL;
@@ -99,9 +107,7 @@ t_ast_node	*parser(t_token *tokens)
 void	free_all_nodes(t_ast_node *nodes)
 {
 	if (nodes == NULL)
-	{
 		return ;
-	}
 	if (nodes->type == ND_CMD)
 	{
 		free(nodes->cmd_name);
@@ -119,5 +125,7 @@ void	free_all_nodes(t_ast_node *nodes)
 		free_all_nodes(nodes->pipe_lhs);
 		free_all_nodes(nodes->pipe_rhs);
 	}
+	else if (nodes->type == ND_ARG)
+		free(nodes->arg_value);
 	free(nodes);
 }
