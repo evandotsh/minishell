@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:28:21 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:26:57 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,17 @@ char	*check_redir(char *str, int i, int j, char *result)
 	{
 		if (str[i] == 34 || str[i] == 39)
 			quote(str, i, j, result);
-		if ((str[i] == '|' || (str[i] == '>' && str[i - 1] != '>')
-				|| (str[i] == '<' && str[i - 1] != '<'))
+		if (((str[i] == '|' && str[i - 1] != '|') || (str[i] == '>'
+					&& str[i - 1] != '>') || (str[i] == '<'
+					&& str[i - 1] != '<'))
 			&& (str[i - 1] != 34 && str[i - 1] != 39))
 		{
 			result[j++] = ' ';
 			if (str[i + 2] == '>' || str[i + 2] == '<')
 				return (NULL);
 		}
-		if (str[i] && str[i - 1] && str[i - 1] != '\0' && (str[i - 1] == '|'
-				|| (str[i - 1] == '>' && str[i] != '>')
+		if (str[i] && str[i - 1] && str[i - 1] != '\0' && ((str[i - 1] == '|'
+				&& str[i] != '|') || (str[i - 1] == '>' && str[i] != '>')
 				|| (str[i - 1] == '<' && str[i] != '<')) 
 			&& (str[i - 1] != 34 && str[i - 1] != 39))
 			result[j++] = ' ';
