@@ -6,7 +6,7 @@
 /*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/16 15:48:03 by sfernand         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:51:25 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_token	*lexer2(char *line, t_token *token, int i, char **argv)
 		}
 	}
 	free(line);
+	system("leaks minishell");
 	return (token);
 }
 
