@@ -6,11 +6,17 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:08:10 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:19:54 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	test_signal(int sig)
+{
+	(void) sig;
+	printf("FUN HELLO\n");
+}
 
 void	executor(t_ast_node *node, t_env *env)
 {

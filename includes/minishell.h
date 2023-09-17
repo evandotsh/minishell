@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:08:26 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/15 08:33:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,7 @@ void						execute_pipe(t_ast_node *node, t_env *env);
 void						setup_redirections(t_ast_node *node);
 void						launch_process(t_ast_node *node, t_env *env);
 char						**build_argv(t_ast_node *node);
+void						setup_signals(void);
+void						test_signal(int sig);
+void						prompt_sigint(int sig);
 #endif

@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/09/13 16:51:31 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/09/15 16:57:25 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRCS		=	$(addprefix sources/, \
 					builtins/echo.c builtins/env.c builtins/pwd.c \
 					builtins/unset.c builtins/cd.c utils/ft_strtrim_lexer.c \
 					builtins/export.c builtins/exit.c expander/expander.c \
-					env/env2.c lexer/quote.c utils/debug.c \
+					env/env2.c lexer/quote.c utils/debug.c signals/signals.c \
+					lexer/memory.c \
 				)
 OBJS	=	${SRCS:.c=.o}
 
