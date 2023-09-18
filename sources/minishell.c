@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:58:50 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/18 16:22:56 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			token = lexer(line);
 			cmds = parser(token);
+			free_all_tokens(token);
 			if (debug)
 			{
 				print_token(token);

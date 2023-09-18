@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:31:47 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:12:29 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_ast_node	*parser(t_token *tokens)
 	while (tokens != NULL)
 	{
 		if (cmd_node->cmd_name == NULL)
-			cmd_node->cmd_name = strdup(tokens->token);
+			cmd_node->cmd_name = ft_strdup(tokens->token);
 		else if (strcmp(tokens->token, "|") != 0 && strcmp(tokens->token,
 				"<") != 0 && strcmp(tokens->token, ">") != 0
 			&& strcmp(tokens->token, ">>") != 0)
@@ -103,7 +103,6 @@ t_ast_node	*parser(t_token *tokens)
 	cmd_node->cmd_args = realloc(cmd_node->cmd_args,
 			sizeof(struct t_ast_node *) * (cmd_node->cmd_arg_count + 1));
 	cmd_node->cmd_args[cmd_node->cmd_arg_count] = NULL;
-	free_all_tokens(tokens);
 	return (cmd_node);
 }
 

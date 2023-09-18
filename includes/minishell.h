@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/15 08:33:12 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:49:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define C_CYAN "\033[0;36m"
 
 // Misc
-# define PATH_MAX 4096
+//# define PATH_MAX 4096
 
 typedef struct s_token
 {
@@ -106,7 +106,7 @@ char						**env_to_envp_format(t_env *env);
 char						*get_exec_path_from_env(char *program, t_env *env);
 void						free_all_nodes(t_ast_node *nodes);
 void						free_all_tokens(t_token *token);
-char						*ft_strtrim_lexer(const char *str);
+char						*ft_strtrim_lexer(char *str);
 int							sh_cd(t_ast_node *node, t_env *env);
 int							sh_export(t_ast_node *node, t_env *env);
 int							sh_exit(t_ast_node *node);
@@ -122,4 +122,5 @@ char						**build_argv(t_ast_node *node);
 void						setup_signals(void);
 void						test_signal(int sig);
 void						prompt_sigint(int sig);
+void						free_split(char **split);
 #endif

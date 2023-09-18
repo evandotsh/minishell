@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/14 12:19:54 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/18 16:02:13 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,32 +144,53 @@ void	launch_process(t_ast_node *node, t_env *env)
 {
 	char	**args;
 	int		ret;
+	char	*path;
+	char	**formatted_env;
 
 	args = build_argv(node);
+	ret = -1337;
 	if (strncmp(node->cmd_name, "echo", 5) == 0)
-		exit(sh_echo(node));
-	else if (strncmp(node->cmd_name, "env", 4) == 0)
-		exit(sh_env(env));
-	else if (strncmp(node->cmd_name, "pwd", 4) == 0)
-		exit(sh_pwd());
-	else if (strncmp(node->cmd_name, "cd", 3) == 0)
-		exit(sh_cd(node, env));
-	else if (strncmp(node->cmd_name, "exit", 5) == 0)
-		exit(sh_exit(node));
-	else
 	{
-		if (!get_exec_path_from_env(args[0], env))
-		{
-			ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
-				args[0]);
-			exit(127);
-		}
-		ret = execve(get_exec_path_from_env(args[0], env), args,
-				env_to_envp_format(env));
-		if (ret == -1)
-			ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", args[0],
-				strerror(errno));
+		ret = sh_echo(node);
+		free_split(args);
 	}
+	else if (strncmp(node->cmd_name, "env", 4) == 0)
+	{
+		ret = sh_env(env);
+		free_split(args);
+	}
+	else if (strncmp(node->cmd_name, "pwd", 4) == 0)
+	{
+		ret = sh_pwd();
+		free_split(args);
+	}
+	else if (strncmp(node->cmd_name, "cd", 3) == 0)
+	{
+		ret = sh_cd(node, env);
+		free_split(args);
+	}
+	else if (strncmp(node->cmd_name, "exit", 5) == 0)
+	{
+		ret = sh_exit(node);
+		free_split(args);
+	}
+	if (ret != -1337)
+		exit(ret);
+	if (!get_exec_path_from_env(args[0], env))
+	{
+		ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
+			args[0]);
+		exit(127);
+	}
+	path = get_exec_path_from_env(args[0], env);
+	formatted_env = env_to_envp_format(env);
+	ret = execve(path, args, formatted_env);
+	free_split(formatted_env);
+	free(path);
+	free_split(args);
+	if (ret == -1)
+		ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", args[0],
+			strerror(errno));
 	exit(1);
 }
 

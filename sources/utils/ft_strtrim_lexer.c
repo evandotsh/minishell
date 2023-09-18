@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim_lexer.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 15:14:45 by sfernand          #+#    #+#             */
-/*   Updated: 2023/09/11 12:28:14 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/17 16:11:13 by sfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_isspace(const char str)
 		return (0);
 }
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+char	*ft_strncpy(char *dest, char *src, size_t n)
 {
 	char		*d;
 	const char	*s;
@@ -39,15 +39,16 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 		*d++ = '\0';
 		i++;
 	}
+	free(src);
 	return (dest);
 }
 
-char	*ft_strtrim_lexer(const char *str)
+char	*ft_strtrim_lexer(char *str)
 {
-	const char	*start;
-	const char	*end;
-	size_t		length;
-	char		*result;
+	char	*start;
+	char	*end;
+	size_t	length;
+	char	*result;
 
 	start = str;
 	if (str == NULL)
@@ -66,5 +67,7 @@ char	*ft_strtrim_lexer(const char *str)
 		ft_strncpy(result, start, length);
 		result[length] = '\0';
 	}
+	else
+		free(result);
 	return (result);
 }
