@@ -86,13 +86,13 @@ char	*add_spaces(char *str)
 	return (result);
 }
 
-t_token	*lexer2(char *line, t_token *token, int i, char **argv)
+t_token	*lexer2(t_token *token, int i, char **argv)
 {
 	if (!argv)
 	{
 		token->token = NULL;
 		token->next = NULL;
-		free(line);
+		free(argv);
 		return (token);
 	}
 	token->token = argv[0];
@@ -105,7 +105,7 @@ t_token	*lexer2(char *line, t_token *token, int i, char **argv)
 				add_token(token, argv[i]);
 		}
 	}
-	free(line);
+	free(argv);
 	return (token);
 }
 
@@ -134,5 +134,6 @@ t_token	*lexer(char *line)
 		return (token);
 	}
 	argv = ft_split_lexer(line, ' ');
-	return (lexer2(line, token, i, argv));
+	free(line);
+	return (lexer2(token, i, argv));
 }
