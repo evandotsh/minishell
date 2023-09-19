@@ -45,16 +45,19 @@ int	main(int argc, char **argv, char **envp)
 		if (line != NULL && line[0] != '\0')
 		{
 			token = lexer(line);
-			cmds = parser(token);
-			free_all_tokens(token);
-			if (debug)
+			if (token->token != NULL)
 			{
-				print_token(token);
-				print_ast_node(cmds, 0);
+				cmds = parser(token);
+				free_all_tokens(token);
+				if (debug)
+				{
+					print_token(token);
+					print_ast_node(cmds, 0);
+				}
+				expander(cmds, env);
+				executor(cmds, env);
+				free_all_nodes(cmds);
 			}
-			expander(cmds, env);
-			executor(cmds, env);
-			free_all_nodes(cmds);
 		}
 		if (line == NULL)
 		{
