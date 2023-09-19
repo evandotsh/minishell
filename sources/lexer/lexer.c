@@ -47,10 +47,10 @@ char	*check_redir(char *str, int i, int j, char *result)
 		{
 			result[j++] = ' ';
 			if (str[i + 2] == '>' || str[i + 2] == '<')
-					return (free(str), NULL);
+				return (free(str), NULL);
 		}
 		if (str[i] && str[i - 1] && str[i - 1] != '\0' && ((str[i - 1] == '|'
-				&& str[i] != '|') || (str[i - 1] == '>' && str[i] != '>')
+					&& str[i] != '|') || (str[i - 1] == '>' && str[i] != '>')
 				|| (str[i - 1] == '<' && str[i] != '<')) 
 			&& (str[i - 1] != 34 && str[i - 1] != 39))
 			result[j++] = ' ';
