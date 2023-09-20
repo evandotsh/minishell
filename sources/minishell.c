@@ -6,21 +6,27 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/18 16:22:56 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:18:22 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_token(t_token *token)
+t_env	*initialize_env(char **envp)
 {
-	printf("\n[");
-	while (token != NULL)
-	{
-		printf("*%s,", token->token);
-		token = token->next;
-	}
-	printf("]\n");
+	t_env	*env;
+
+	env = env_from_parent(envp);
+	env_set(env, "?", "0");
+	env_set_secret(env, "?");
+	return (env);
+}
+
+void	initialize_signal(void)
+{
+	signal(SIGINT, shell_sigint);
+	signal(SIGQUIT, shell_sigquit);
+	signal(SIGTERM, shell_sigterm);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -29,29 +35,25 @@ int	main(int argc, char **argv, char **envp)
 	t_token		*token;
 	t_ast_node	*cmds;
 	t_env		*env;
-	int			debug;
+	int			i;
 
-	debug = 0;
-	if (argc == 2 && strcmp(argv[1], "--debug") == 0)
-		debug = 1;
-	env = env_from_parent(envp);
-	(void) env;
-	signal(2, prompt_sigint);
+	(void)argc;
+	(void)argv;
+	env = initialize_env(envp);
+	initialize_signal();
 	while (TRUE)
 	{
-		printf("\n%sminishell$ \n%s", C_PURPLE, C_YELLOW);
-		line = readline(PROMPT C_RESET);
+		line = readline(PROMPT);
 		add_history(line);
 		if (line != NULL && line[0] != '\0')
 		{
+			i = 0;
+			while (line[i] == ' ' || line[i] == '\t')
+				i++;
+			line = ft_strdup(line + i);
 			token = lexer(line);
 			cmds = parser(token);
 			free_all_tokens(token);
-			if (debug)
-			{
-				print_token(token);
-				print_ast_node(cmds, 0);
-			}
 			expander(cmds, env);
 			executor(cmds, env);
 			free_all_nodes(cmds);

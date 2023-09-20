@@ -6,22 +6,11 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 07:08:35 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/11 12:22:21 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:46:13 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char	*ft_strndup(char *str, int n)
-{
-	char	*new_str;
-
-	new_str = malloc(sizeof(char) * (n + 1));
-	if (!new_str)
-		return (NULL);
-	ft_strlcpy(new_str, str, n + 1);
-	return (new_str);
-}
 
 t_env	*env_from_parent(char **envp)
 {
@@ -58,6 +47,22 @@ void	env_add(t_env *env, char *env_var)
 	env_add_back(env, key, value);
 }
 
+void	env_set_secret(t_env *env, char *key)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		{
+			tmp->is_secret = 1;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	env_set(t_env *env, char *key, char *value)
 {
 	t_env	*tmp;
@@ -88,6 +93,7 @@ void	env_add_back(t_env *env, char *key, char *value)
 		return ;
 	tmp->next->key = ft_strdup(key);
 	tmp->next->value = ft_strdup(value);
+	tmp->next->is_secret = 0;
 	tmp->next->next = NULL;
 	tmp->next->prev = tmp;
 }

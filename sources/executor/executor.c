@@ -6,17 +6,11 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/18 16:02:13 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:20:36 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	test_signal(int sig)
-{
-	(void) sig;
-	printf("FUN HELLO\n");
-}
 
 void	executor(t_ast_node *node, t_env *env)
 {
@@ -32,7 +26,6 @@ void	execute_command(t_ast_node *node, t_env *env)
 {
 	int		status;
 	pid_t	pid;
-	int		ret;
 
 	if (strncmp(node->cmd_name, "unset", 5) == 0)
 	{
@@ -42,6 +35,11 @@ void	execute_command(t_ast_node *node, t_env *env)
 	if (strncmp(node->cmd_name, "export", 6) == 0)
 	{
 		sh_export(node, env);
+		return ;
+	}
+	if (strncmp(node->cmd_name, "exit", 5) == 0)
+	{
+		sh_exit(node);
 		return ;
 	}
 	pid = fork();
@@ -54,14 +52,7 @@ void	execute_command(t_ast_node *node, t_env *env)
 	{
 		node->cmd_pid = pid;
 		waitpid(pid, &status, 0);
-		ret = WEXITSTATUS(status);
-		if (ret == 127)
-			node->cmd_termination_code = 127;
-		else if (ret == 1)
-			node->cmd_termination_code = 1;
-		else
-			node->cmd_termination_code = 0;
-		printf("Termination code: %d\n", node->cmd_termination_code);
+		env_set(env, "?", ft_itoa(WEXITSTATUS(status)));
 	}
 }
 
@@ -150,32 +141,18 @@ void	launch_process(t_ast_node *node, t_env *env)
 	args = build_argv(node);
 	ret = -1337;
 	if (strncmp(node->cmd_name, "echo", 5) == 0)
-	{
 		ret = sh_echo(node);
-		free_split(args);
-	}
 	else if (strncmp(node->cmd_name, "env", 4) == 0)
-	{
 		ret = sh_env(env);
-		free_split(args);
-	}
 	else if (strncmp(node->cmd_name, "pwd", 4) == 0)
-	{
 		ret = sh_pwd();
-		free_split(args);
-	}
 	else if (strncmp(node->cmd_name, "cd", 3) == 0)
-	{
 		ret = sh_cd(node, env);
-		free_split(args);
-	}
-	else if (strncmp(node->cmd_name, "exit", 5) == 0)
-	{
-		ret = sh_exit(node);
-		free_split(args);
-	}
 	if (ret != -1337)
+	{
+		free_split(args);
 		exit(ret);
+	}
 	if (!get_exec_path_from_env(args[0], env))
 	{
 		ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
@@ -197,12 +174,15 @@ void	launch_process(t_ast_node *node, t_env *env)
 char	**build_argv(t_ast_node *node)
 {
 	char	**args;
+	int		i;
 
+	i = 0;
 	args = malloc((node->cmd_arg_count + 2) * sizeof(char *));
 	args[0] = node->cmd_name;
-	for (int i = 0; i < node->cmd_arg_count; ++i)
+	while (i < node->cmd_arg_count)
 	{
 		args[i + 1] = node->cmd_args[i]->arg_value;
+		i++;
 	}
 	args[node->cmd_arg_count + 1] = NULL;
 	return (args);

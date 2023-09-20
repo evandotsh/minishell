@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/18 15:49:19 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:19:00 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <signal.h>
 
 // Defines
 # define TRUE 1
 # define FALSE 0
-# define PROMPT "❯ "
+# define PROMPT "minishell$ "
 # define DEBUG_PANGRAM "The quick brown fox jumps over the lazy dog\n"
 
 // Colors
@@ -81,6 +82,7 @@ typedef struct s_env
 {
 	char					*key;
 	char					*value;
+	int						is_secret;
 	struct s_env			*next;
 	struct s_env			*prev;
 }							t_env;
@@ -117,10 +119,15 @@ void						print_ast_node(t_ast_node *node, int depth);
 void						execute_command(t_ast_node *node, t_env *env);
 void						execute_pipe(t_ast_node *node, t_env *env);
 void						setup_redirections(t_ast_node *node);
+void						env_set_secret(t_env *env, char *key);
 void						launch_process(t_ast_node *node, t_env *env);
 char						**build_argv(t_ast_node *node);
 void						setup_signals(void);
 void						test_signal(int sig);
-void						prompt_sigint(int sig);
+char						*ft_strndup(char *str, int n);
 void						free_split(char **split);
+int							ft_random(void);
+void						shell_sigint(int sig);
+void						shell_sigquit(int sig);
+void						shell_sigterm(int sig);
 #endif

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/18 16:09:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 09:00:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ char	*check_redir(char *str, int i, int j, char *result)
 		{
 			result[j++] = ' ';
 			if (str[i + 2] == '>' || str[i + 2] == '<')
-					return (free(str), NULL);
+				return (free(str), NULL);
 		}
-		if (str[i] && str[i - 1] && str[i - 1] != '\0' && ((str[i - 1] == '|'
-				&& str[i] != '|') || (str[i - 1] == '>' && str[i] != '>')
-				|| (str[i - 1] == '<' && str[i] != '<')) 
-			&& (str[i - 1] != 34 && str[i - 1] != 39))
+		if (i > 0 && str[i] && str[i - 1] && str[i - 1] != '\0' && (
+				(str[i - 1] == '|' && str[i] != '|') || 
+				(str[i - 1] == '>' && str[i] != '>') || 
+				(str[i - 1] == '<' && str[i] != '<')) && 
+			(str[i - 1] != 34 && str[i - 1] != 39))
 			result[j++] = ' ';
 		result[j++] = str[i++];
 	}
 	result[j] = '\0';
 	result = ft_strtrim_lexer(result);
 	result = ft_epur_str(result);
-	ft_printf("%s\n", result);
 	return (result);
 }
 

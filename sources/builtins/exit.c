@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 13:59:55 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:07:21 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:25:39 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,5 @@ int	sh_exit(t_ast_node *node)
 	}
 	else
 		exit_code = 0;
-	printf("exitting with code %d\n", exit_code % 256);
-	return (0);
+	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/18 13:12:29 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:18:03 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,46 @@ t_ast_node	*make_arg_node(char *arg_value)
 	return (node);
 }
 
+char	*handle_heredoc(t_token *tokens)
+{
+	char	*delim;
+	char	*line;
+	char	*result;
+	int		fd;
+	char	*random;
+
+	random = ft_itoa(ft_random());
+	result = ft_strjoin("/tmp/heredoc", random);
+	free(random);
+	delim = ft_strdup(tokens->token);
+	fd = open(result, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("open");
+		return (NULL);
+	}
+	while (1)
+	{
+		line = readline("> ");
+		if (strcmp(line, delim) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	close(fd);
+	return (result);
+}
+
 t_ast_node	*parser(t_token *tokens)
 {
 	t_ast_node	*cmd_node;
 	t_ast_node	*pipe_node;
 	t_token		*prev_token;
+	char		*tmp_heredoc;
 
 	if (tokens == NULL)
 		return (NULL);
@@ -45,7 +80,8 @@ t_ast_node	*parser(t_token *tokens)
 			cmd_node->cmd_name = ft_strdup(tokens->token);
 		else if (strcmp(tokens->token, "|") != 0 && strcmp(tokens->token,
 				"<") != 0 && strcmp(tokens->token, ">") != 0
-			&& strcmp(tokens->token, ">>") != 0)
+			&& strcmp(tokens->token, ">>") != 0 && strcmp(tokens->token,
+				"<<") != 0)
 		{
 			cmd_node->cmd_args = realloc(cmd_node->cmd_args,
 					sizeof(struct t_ast_node *) * (cmd_node->cmd_arg_count
@@ -55,7 +91,8 @@ t_ast_node	*parser(t_token *tokens)
 				- 1] = make_arg_node(tokens->token);
 		}
 		else if (strcmp(tokens->token, "<") == 0 || strcmp(tokens->token,
-				">") == 0 || strcmp(tokens->token, ">>") == 0)
+				">") == 0 || strcmp(tokens->token, ">>") == 0 || strcmp(
+				tokens->token, "<<") == 0)
 		{
 			prev_token = tokens;
 			tokens = tokens->next;
@@ -69,9 +106,6 @@ t_ast_node	*parser(t_token *tokens)
 				cmd_node->cmd_stdin_source = 0;
 				cmd_node->cmd_stdin_file = ft_strdup(tokens->token);
 			}
-			else if (strcmp(prev_token->token, "<<") == 0)
-			{
-			}
 			else if (strcmp(prev_token->token, ">") == 0)
 			{
 				cmd_node->cmd_stdout_dest = 1;
@@ -81,6 +115,14 @@ t_ast_node	*parser(t_token *tokens)
 			{
 				cmd_node->cmd_stdout_dest = 2;
 				cmd_node->cmd_stdout_file = ft_strdup(tokens->token);
+			}
+			else if (strcmp(prev_token->token, "<<") == 0)
+			{
+				cmd_node->cmd_stdin_source = 0;
+				tmp_heredoc = handle_heredoc(tokens);
+				cmd_node->cmd_stdin_file = ft_strdup(tmp_heredoc);
+				printf("heredoc: %s\n", tmp_heredoc);
+				free(tmp_heredoc);
 			}
 		}
 		else if (strcmp(tokens->token, "|") == 0)
