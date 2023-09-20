@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/20 13:19:44 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/21 01:43:54 by sfernand         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -63,29 +63,6 @@ char	*check_redir(char *str, int i, int j, char *result)
 	return (result);
 }
 
-char	*add_spaces(char *str)
-{
-	size_t	len;
-	char	*result;
-	size_t	i;
-	size_t	j;
-
-	len = ft_strlen(str);
-	i = 0;
-	j = 0;
-	if (str == NULL || len == 0)
-		return (free(str), NULL);
-	result = (char *)malloc((len * 2 + 1) * sizeof(char));
-	if (result == NULL)
-	{
-		free(str);
-		return (NULL);
-	}
-	result = check_redir(str, i, j, result);
-	free(str);
-	return (result);
-}
-
 t_token	*lexer2(t_token *token, int i, char **argv)
 {
 	if (!argv)
@@ -117,7 +94,6 @@ t_token	*lexer(char *line)
 
 	i = 0;
 	line = ft_strtrim_lexer(line);
-	line = ft_epur_str(line);
 	line = add_spaces(line);
 	if (line != NULL)
 		line = ft_epur_str(line);
@@ -131,7 +107,7 @@ t_token	*lexer(char *line)
 	{
 		token->token = NULL;
 		token->next = NULL;
-		return (token);
+		return (ft_printf("syntax error\n"), token);
 	}
 	argv = ft_split_lexer(line, ' ');
 	free(line);

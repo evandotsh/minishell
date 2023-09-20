@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: sfernand <sfernand@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:19:00 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/21 01:15:51 by sfernand         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -130,4 +130,6 @@ int							ft_random(void);
 void						shell_sigint(int sig);
 void						shell_sigquit(int sig);
 void						shell_sigterm(int sig);
+char						*add_spaces(char *str);
+char						*check_redir(char *str, int i, int j, char *result);
 #endif
