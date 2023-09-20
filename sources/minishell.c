@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:18:22 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:20:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,14 @@ int	main(int argc, char **argv, char **envp)
 				i++;
 			line = ft_strdup(line + i);
 			token = lexer(line);
-			cmds = parser(token);
-			free_all_tokens(token);
-			expander(cmds, env);
-			executor(cmds, env);
-			free_all_nodes(cmds);
+			if (token->token != NULL)
+			{
+				cmds = parser(token);
+				free_all_tokens(token);
+				expander(cmds, env);
+				executor(cmds, env);
+				free_all_nodes(cmds);
+			}
 		}
 		if (line == NULL)
 		{
