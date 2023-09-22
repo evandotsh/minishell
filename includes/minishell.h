@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:16:34 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:56:54 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,8 @@ int							ft_random(void);
 void						print_ast_node(t_ast_node *node, int depth);
 char						*ft_strndup(char *str, int n);
 void						free_split(char **split);
-int							ft_strcmp(const char *s1, const char *s2);
-char						*ft_strncpy(char *dest, char *src, unsigned int n);
-char						*ft_strcpy(char *dest, char *src);
-void						*ft_realloc(void *ptr, size_t size);
-
+int							ft_random(void);
+void						shell_sigint(int sig);
+void						shell_sigquit(int sig);
+void						shell_sigterm(int sig);
 #endif
