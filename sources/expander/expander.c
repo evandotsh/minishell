@@ -6,14 +6,11 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 07:38:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:16:57 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:54:06 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 t_env	*find_env(t_env *env, char *key)
 {
@@ -63,7 +60,8 @@ char	*process_string(t_env *env, char *string, int *i)
 			in_single_quotes = !in_single_quotes;
 		else if (string[*i] == '\"')
 			in_double_quotes = !in_double_quotes;
-		if (string[*i] == '$' && ft_isalpha(string[*i + 1]) && !in_single_quotes)
+		if (string[*i] == '$' && ft_isalpha(string[*i + 1])
+			&& !in_single_quotes)
 		{
 			(*i)++;
 			val = expand_key(env, string, i);

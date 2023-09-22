@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 10:11:58 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/04/17 17:35:27 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:27:42 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	*ft_memcpy(void *dst, void const *src, size_t n)
 
 	if (!dst && !src)
 		return (NULL);
+	if (dst == src || n == 0)
+		return (dst);
 	dst_c = (unsigned char *)dst;
 	src_c = (unsigned char *)src;
 	while (n--)

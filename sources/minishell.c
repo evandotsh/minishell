@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:57:19 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:39:48 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	shell_pipeline(char *line, t_env *env)
 	expand_tokens(env, tokens);
 	interpret_quotes_tokens(tokens);
 	cmds = parser(tokens, env);
+	print_ast_node(cmds, 0);
 	executor(cmds, env);
 	free_all_nodes(cmds);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:56:54 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:38:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ char						**ft_split_lexer(char const *s, char c);
 char						*ft_epur_str(char *str);
 char						*ft_strtrim_lexer(char *str);
 void						quote(char *str, int i, int j, char *result);
+char						*add_spaces(char *str);
+char						*check_redir(char *str, int i, int j, char *result);
 
 // AST helpers
 char						*get_node_arg(t_ast_node *node, int index);
@@ -179,4 +181,10 @@ int							ft_random(void);
 void						shell_sigint(int sig);
 void						shell_sigquit(int sig);
 void						shell_sigterm(int sig);
+char						*ft_strcpy(char *dest, char *src);
+void						*ft_realloc(void *ptr, size_t size);
+char						*ft_strcpy(char *dest, char *src);
+int							ft_strcmp(const char *s1, const char *s2);
+char						*ft_strncpy(char *dest, char *src, size_t n);
+void						print_ast_node(t_ast_node *node, int depth);
 #endif

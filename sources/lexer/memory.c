@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 13:52:47 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:16:25 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:21:38 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,19 @@ void	free_all_nodes(t_ast_node *nodes)
 	free(nodes);
 }
 
-void	*ft_realloc(void *ptr, size_t size)
+void	*ft_realloc(void *ptr, size_t newsize)
 {
-	void	*new_ptr;
+	char	*newptr;
+	size_t	cursize;
 
-	new_ptr = malloc(size);
-	if (!new_ptr)
-		return (NULL);
-	if (ptr)
-	{
-		ft_memcpy(new_ptr, ptr, size);
-		free(ptr);
-	}
-	return (new_ptr);
+	if (ptr == 0)
+		return (malloc(newsize));
+	cursize = sizeof(ptr);
+	if (newsize <= cursize)
+		return (ptr);
+	newptr = malloc(newsize);
+	newptr = 0;
+	ft_memcpy(ptr, newptr, cursize);
+	free(ptr);
+	return (newptr);
 }

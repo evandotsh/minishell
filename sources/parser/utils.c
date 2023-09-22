@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:00:02 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:19:55 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:44:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_ast_node	*make_cmd_node(void)
 	node = malloc(sizeof(t_ast_node));
 	node->type = ND_CMD;
 	node->cmd_name = NULL;
-	node->cmd_args = calloc(1, sizeof(t_ast_node *));
+	node->cmd_args = ft_calloc(1, sizeof(t_ast_node *));
 	node->cmd_arg_count = 0;
 	node->cmd_stdin_source = 0;
 	node->cmd_stdout_dest = 0;

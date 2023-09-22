@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:19:11 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:52:28 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ t_ast_node	*parser_loop(t_ast_node *cmd_node, t_token *tokens, t_env *env)
 t_ast_node	*parser(t_token *tokens, t_env *env)
 {
 	t_ast_node	*cmd_node;
+	int			i;
+	int			num_args;
+	t_ast_node	**new_args;
 
 	if (tokens == NULL)
 		return (NULL);
@@ -62,8 +65,16 @@ t_ast_node	*parser(t_token *tokens, t_env *env)
 		cmd_node = parser_loop(cmd_node, tokens, env);
 		tokens = tokens->next;
 	}
-	cmd_node->cmd_args = ft_realloc(cmd_node->cmd_args,
-			sizeof(struct t_ast_node *) * (cmd_node->cmd_arg_count + 1));
-	cmd_node->cmd_args[cmd_node->cmd_arg_count] = NULL;
+	i = 0;
+	num_args = cmd_node->cmd_arg_count + 1;
+	new_args = malloc(sizeof(t_ast_node *) * num_args);
+	while (i < cmd_node->cmd_arg_count)
+	{
+		new_args[i] = cmd_node->cmd_args[i];
+		i++;
+	}
+	new_args[num_args - 1] = NULL;
+	free(cmd_node->cmd_args);
+	cmd_node->cmd_args = new_args;
 	return (cmd_node);
 }
