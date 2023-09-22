@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:20:36 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:08:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,36 @@ void	executor(t_ast_node *node, t_env *env)
 		execute_pipe(node, env);
 }
 
+int	execute_special_builtins(t_ast_node *node, t_env *env)
+{
+	int	ret;
+
+	ret = 0;
+	if (ft_strncmp(node->cmd_name, "unset", 5) == 0)
+	{
+		ret = 1;
+		sh_unset(node, env);
+	}
+	if (ft_strncmp(node->cmd_name, "export", 6) == 0)
+	{
+		ret = 1;
+		sh_export(node, env);
+	}
+	if (ft_strncmp(node->cmd_name, "exit", 5) == 0)
+	{
+		ret = 1;
+		sh_exit(node);
+	}
+	return (ret);
+}
+
 void	execute_command(t_ast_node *node, t_env *env)
 {
 	int		status;
 	pid_t	pid;
 
-	if (strncmp(node->cmd_name, "unset", 5) == 0)
-	{
-		sh_unset(node, env);
+	if (execute_special_builtins(node, env))
 		return ;
-	}
-	if (strncmp(node->cmd_name, "export", 6) == 0)
-	{
-		sh_export(node, env);
-		return ;
-	}
-	if (strncmp(node->cmd_name, "exit", 5) == 0)
-	{
-		sh_exit(node);
-		return ;
-	}
 	pid = fork();
 	if (pid == 0)
 	{
@@ -63,71 +73,25 @@ void	execute_pipe(t_ast_node *node, t_env *env)
 	pid_t	pid2;
 
 	if (pipe(pipefd) < 0)
-	{
-		fprintf(stderr, "Pipe failed.\n");
-		return ;
-	}
+		return (error(node->cmd_name, "pipe failed"));
 	pid1 = fork();
 	if (pid1 < 0)
-	{
-		ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", node->cmd_name,
-			"fork failed");
-		return ;
-	}
+		return (error(node->cmd_name, "fork failed"));
 	if (pid1 == 0)
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-		executor(node->pipe_lhs, env);
-		exit(0);
-	}
+		pidis0(node, env, pipefd, STDOUT_FILENO);
 	else
 	{
 		pid2 = fork();
 		if (pid2 < 0)
-		{
-			ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", node->cmd_name,
-				"fork failed");
-			return ;
-		}
+			return (error(node->cmd_name, "fork failed"));
 		if (pid2 == 0)
-		{
-			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-			executor(node->pipe_rhs, env);
-			exit(0);
-		}
+			pidis0(node, env, pipefd, STDIN_FILENO);
 		else
 		{
-			close(pipefd[0]);
-			close(pipefd[1]);
+			closepipes(pipefd);
 			wait(NULL);
 			wait(NULL);
 		}
-	}
-}
-
-void	setup_redirections(t_ast_node *node)
-{
-	int	in;
-	int	out;
-
-	if (node->cmd_stdin_file)
-	{
-		in = open(node->cmd_stdin_file, O_RDONLY);
-		dup2(in, STDIN_FILENO);
-		close(in);
-	}
-	if (node->cmd_stdout_file)
-	{
-		if (node->cmd_stdout_dest == 1)
-			out = open(node->cmd_stdout_file, O_WRONLY | O_TRUNC | O_CREAT);
-		else
-			out = open(node->cmd_stdout_file, O_APPEND | O_WRONLY);
-		dup2(out, STDOUT_FILENO);
-		close(out);
 	}
 }
 
@@ -139,20 +103,7 @@ void	launch_process(t_ast_node *node, t_env *env)
 	char	**formatted_env;
 
 	args = build_argv(node);
-	ret = -1337;
-	if (strncmp(node->cmd_name, "echo", 5) == 0)
-		ret = sh_echo(node);
-	else if (strncmp(node->cmd_name, "env", 4) == 0)
-		ret = sh_env(env);
-	else if (strncmp(node->cmd_name, "pwd", 4) == 0)
-		ret = sh_pwd();
-	else if (strncmp(node->cmd_name, "cd", 3) == 0)
-		ret = sh_cd(node, env);
-	if (ret != -1337)
-	{
-		free_split(args);
-		exit(ret);
-	}
+	execute_builtins(node, env, args);
 	if (!get_exec_path_from_env(args[0], env))
 	{
 		ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
@@ -169,21 +120,4 @@ void	launch_process(t_ast_node *node, t_env *env)
 		ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", args[0],
 			strerror(errno));
 	exit(1);
-}
-
-char	**build_argv(t_ast_node *node)
-{
-	char	**args;
-	int		i;
-
-	i = 0;
-	args = malloc((node->cmd_arg_count + 2) * sizeof(char *));
-	args[0] = node->cmd_name;
-	while (i < node->cmd_arg_count)
-	{
-		args[i + 1] = node->cmd_args[i]->arg_value;
-		i++;
-	}
-	args[node->cmd_arg_count + 1] = NULL;
-	return (args);
 }

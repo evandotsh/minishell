@@ -6,68 +6,99 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/20 13:20:12 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:46:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void	ft_exit(void)
+{
+	ft_printf("exit\n");
+	exit(0);
+}
+
 t_env	*initialize_env(char **envp)
 {
 	t_env	*env;
+	t_env	*tmp;
 
-	env = env_from_parent(envp);
+	env = NULL;
+	if (envp[0])
+		env = env_from_parent(envp);
+	else
+	{
+		tmp = malloc(sizeof(t_env));
+		if (!tmp)
+			return (NULL);
+		tmp->key = "SHLVL";
+		tmp->value = "1";
+		tmp->is_secret = 0;
+		tmp->next = env;
+		tmp->prev = NULL;
+		env = tmp;
+	}
 	env_set(env, "?", "0");
 	env_set_secret(env, "?");
 	return (env);
 }
 
-void	initialize_signal(void)
+int	shell_pipeline(char *line, t_env *env)
 {
-	signal(SIGINT, shell_sigint);
-	signal(SIGQUIT, shell_sigquit);
-	signal(SIGTERM, shell_sigterm);
+	t_token		*tokens;
+	t_ast_node	*cmds;
+	char		*tmp;
+
+	tmp = ft_strdup(line);
+	tokens = lexer(line);
+	if (!tokens->token)
+		return (1);
+	add_history(tmp);
+	free(tmp);
+	expand_tokens(env, tokens);
+	interpret_quotes_tokens(tokens);
+	cmds = parser(tokens, env);
+	executor(cmds, env);
+	free_all_nodes(cmds);
+	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+void	shell_loop(t_env *env)
 {
-	char		*line;
-	t_token		*token;
-	t_ast_node	*cmds;
-	t_env		*env;
-	int			i;
+	char	*line;
+	int		i;
 
-	(void)argc;
-	(void)argv;
-	env = initialize_env(envp);
-	initialize_signal();
 	while (TRUE)
 	{
+		initialize_signal();
 		line = readline(PROMPT);
-		add_history(line);
-		if (line != NULL && line[0] != '\0')
+		if (line && line[0] != '\0')
 		{
 			i = 0;
 			while (line[i] == ' ' || line[i] == '\t')
 				i++;
-			line = ft_strdup(line + i);
-			token = lexer(line);
-			if (token->token != NULL)
+			if (line[i] == '\0')
 			{
-				cmds = parser(token);
-				free_all_tokens(token);
-				expander(cmds, env);
-				executor(cmds, env);
-				free_all_nodes(cmds);
+				free(line);
+				continue ;
 			}
+			line = ft_strdup(line + i);
+			shell_pipeline(line, env);
 		}
-		if (line == NULL)
-		{
-			ft_printf("exit\n");
-			free(line);
-			exit(0);
-		}
+		if (!line)
+			ft_exit();
+		free(line);
 	}
-	free(line);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env		*env;
+
+	(void)argc;
+	(void)argv;
+	env = initialize_env(envp);
+	echo_control_seq(0);
+	shell_loop(env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 07:38:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/11 13:34:19 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:16:57 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,66 +15,107 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	expander(t_ast_node *node, t_env *env)
+t_env	*find_env(t_env *env, char *key)
 {
-	t_env	*curr_env;
-	char	*arg;
-	char	*key;
-	char	*key_with_dollar;
-	char	*ptr;
-	char	*new_arg;
-	int		i;
+	t_env	*temp;
 
-	if (node == NULL)
+	temp = env;
+	while (temp)
 	{
-		return ;
+		if (ft_strcmp(temp->key, key) == 0)
+			return (temp);
+		temp = temp->next;
 	}
-	if (node->type == ND_CMD)
+	return (NULL);
+}
+
+char	*expand_key(t_env *env, char *string, int *i)
+{
+	int		start;
+	char	*key;
+	t_env	*val;
+
+	start = *i;
+	while (ft_isalnum(string[*i]) || string[*i] == '_' || string[*i] == '?')
+		(*i)++;
+	key = malloc((*i) - start + 1);
+	ft_strncpy(key, &string[start], (*i) - start);
+	key[(*i) - start] = '\0';
+	val = find_env(env, key);
+	free(key);
+	if (val)
+		return (val->value);
+	else
+		return ("");
+}
+
+char	*process_string(t_env *env, char *string, int *i)
+{
+	int		in_single_quotes;
+	int		in_double_quotes;
+	char	*val;
+
+	in_single_quotes = 0;
+	in_double_quotes = 0;
+	while (string[*i] != '\0')
 	{
-		i = 0;
-		while (i < node->cmd_arg_count)
+		if (string[*i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (string[*i] == '\"')
+			in_double_quotes = !in_double_quotes;
+		if (string[*i] == '$' && ft_isalpha(string[*i + 1]) && !in_single_quotes)
 		{
-			arg = node->cmd_args[i]->arg_value;
-			if (arg[0] == '\"' && arg[strlen(arg) - 1] == '\"')
-			{
-				memmove(arg, arg + 1, strlen(arg) - 2);
-				arg[strlen(arg) - 2] = '\0';
-			}
-			if (arg[0] == '\'' && arg[strlen(arg) - 1] == '\'')
-			{
-				memmove(arg, arg + 1, strlen(arg) - 2);
-				arg[strlen(arg) - 2] = '\0';
-				i++;
-				continue ;
-			}
-			curr_env = env;
-			while (curr_env != NULL)
-			{
-				key = curr_env->key;
-				key_with_dollar = malloc(strlen(key) + 2);
-				strcpy(key_with_dollar, "$");
-				strcat(key_with_dollar, key);
-				ptr = strstr(arg, key_with_dollar);
-				if (ptr != NULL)
-				{
-					new_arg = calloc(strlen(arg) + strlen(curr_env->value) + 1,
-							sizeof(char));
-					strncpy(new_arg, arg, ptr - arg);
-					strcat(new_arg, curr_env->value);
-					strcat(new_arg, ptr + strlen(key_with_dollar));
-					free(arg);
-					arg = new_arg;
-				}
-				free(key_with_dollar);
-				curr_env = curr_env->next;
-			}
-			node->cmd_args[i]->arg_value = arg;
-			i++;
+			(*i)++;
+			val = expand_key(env, string, i);
+			return (val);
 		}
+		else
+			return (NULL);
 	}
-	else if (node->type == ND_PIPE)
+	return (NULL);
+}
+
+char	*expand(t_env *env, char *string)
+{
+	char	*result;
+	int		i;
+	int		j;
+	char	*processed_str;
+	int		len;
+
+	result = malloc(ft_strlen(string) + 1);
+	i = 0;
+	j = 0;
+	while (string[i] != '\0')
 	{
-		expander(node->pipe_lhs, env);
-		expander(node->pipe_rhs, env);
+		processed_str = process_string(env, string, &i); 
+		if (processed_str != NULL)
+		{
+			len = ft_strlen(processed_str);
+			result = ft_realloc(result, j + len + 1);
+			ft_strcpy(&result[j], processed_str);
+			j += len;
+		}
+		else
+			result[j++] = string[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+void	expand_tokens(t_env *env, t_token *token)
+{
+	t_token	*tmp;
+	char	*tmp_value;
+
+	tmp = token;
+	if (token == NULL)
+		return ;
+	while (tmp)
+	{
+		tmp_value = expand(env, tmp->token);
+		free(tmp->token);
+		tmp->token = tmp_value;
+		tmp = tmp->next;
 	}
 }

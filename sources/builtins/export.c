@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:04:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:07:32 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:06:09 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	sh_print_export(t_env *env)
 	while (env)
 	{
 		if (env->value[0] != '\0' && env->is_secret == 0)
-			printf("declare -x %s=%s\n", env->key, env->value);
+			printf("declare -x %s=\"%s\"\n", env->key, env->value);
 		else if (env->is_secret == 0)
 			printf("declare -x %s\n", env->key);
 		env = env->next;
@@ -38,6 +38,8 @@ int	sh_add_export(char *key, char *value, t_env *env)
 			env_set(env, key, "");
 		if (ret != 1)
 			ret = 0;
+		free(key);
+		free(value);
 	}
 	else
 	{
@@ -51,6 +53,7 @@ int	sh_add_export(char *key, char *value, t_env *env)
 int	sh_export(t_ast_node *node, t_env *env)
 {
 	int		i;
+	char	**split;
 	char	*key;
 	char	*value;
 	int		iter_ret;
@@ -65,11 +68,13 @@ int	sh_export(t_ast_node *node, t_env *env)
 	{
 		while (get_node_arg(node, i))
 		{
-			key = ft_split_lexer(get_node_arg(node, i), '=')[0];
-			value = ft_split_lexer(get_node_arg(node, i), '=')[1];
+			split = ft_split(get_node_arg(node, i), '=');
+			key = ft_strdup(split[0]);
+			value = ft_strdup(split[1]);
 			iter_ret = sh_add_export(key, value, env);
 			if (ret != 1)
 				ret = iter_ret;
+			free_split(split);
 			i++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 12:22:27 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 11:49:41 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:26:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ char	*get_exec_path_from_env(char *program, t_env *env)
 	i = 0;
 	while (paths[i])
 	{
-		paths[i] = ft_strjoin(paths[i], "/");
-		paths[i] = ft_strjoin(paths[i], program);
+		paths[i] = ft_strjoin(ft_strjoin(paths[i], "/"), program);
 		if (access(paths[i], F_OK) == 0)
 		{
 			exec_path = ft_strdup(paths[i]);

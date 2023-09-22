@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:11:28 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:14:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:20:57 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ void	print_pipe_node(t_ast_node *node, int depth)
 void	print_ast_node(t_ast_node *node, int depth)
 {
 	if (node == NULL)
-	{
 		return ;
-	}
 	print_indent(depth);
 	if (node->type == ND_CMD)
 	{
@@ -81,7 +79,5 @@ void	print_ast_node(t_ast_node *node, int depth)
 		print_pipe_node(node, depth);
 	}
 	else
-	{
 		printf("UNKNOWN");
-	}
 }
