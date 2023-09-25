@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:00:02 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 10:44:19 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:49:28 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 void	handle_args(t_ast_node *cmd_node, t_token *tokens)
 {
-	cmd_node->cmd_args = ft_realloc(cmd_node->cmd_args,
-			sizeof(struct t_ast_node *) * (cmd_node->cmd_arg_count + 1));
-	cmd_node->cmd_arg_count++;
-	cmd_node->cmd_args[cmd_node->cmd_arg_count - 1]
-		= make_arg_node(tokens->token);
+	int			num_args;
+	t_ast_node	**new_args;
+	int			i;
+
+	i = 0;
+	num_args = cmd_node->cmd_arg_count + 1;
+	new_args = malloc(sizeof(t_ast_node *) * num_args);
+	while (i < cmd_node->cmd_arg_count)
+	{
+		new_args[i] = cmd_node->cmd_args[i];
+		i++;
+	}
+	new_args[i] = make_arg_node(tokens->token);
+	free(cmd_node->cmd_args);
+	cmd_node->cmd_args = new_args;
+	cmd_node->cmd_arg_count = num_args;
 }
 
 t_ast_node	*make_pipe_node(t_ast_node *cmd_node, t_token *tokens, t_env *env)
@@ -46,7 +57,7 @@ t_ast_node	*make_arg_node(char *arg_value)
 
 	node = malloc(sizeof(t_ast_node));
 	node->type = ND_ARG;
-	node->arg_value = strdup(arg_value);
+	node->arg_value = ft_strdup(arg_value);
 	return (node);
 }
 

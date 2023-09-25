@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 15:48:55 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:47:22 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/24 19:57:40 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,15 @@ char	*ft_strcpy(char *dest, char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+char	*build_path(char *path, char *cmd_name)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = ft_strjoin(path, "/");
+	tmp2 = ft_strjoin(tmp, cmd_name);
+	free(tmp);
+	return (tmp2);
 }

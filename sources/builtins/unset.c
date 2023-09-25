@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 12:26:37 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:08:05 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:45:48 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	sh_unset(t_ast_node *node, t_env *env)
 {
-	int	i;
-	int	ret;
+	int		i;
+	int		ret;
+	char	*tmp;
 
 	i = 0;
 	ret = 0;
@@ -32,5 +33,8 @@ int	sh_unset(t_ast_node *node, t_env *env)
 		}
 		i++;
 	}
+	tmp = ft_itoa(ret);
+	env_set(env, "?", tmp);
+	free(tmp);
 	return (ret);
 }

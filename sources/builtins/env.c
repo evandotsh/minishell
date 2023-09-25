@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 12:24:36 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/19 11:39:55 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:19:34 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ int	sh_env(t_env *env)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+	env_set(env, "?", "0");
 	return (0);
 }

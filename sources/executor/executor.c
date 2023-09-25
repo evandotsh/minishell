@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 08:08:12 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:09:35 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,25 @@ int	execute_special_builtins(t_ast_node *node, t_env *env)
 	int	ret;
 
 	ret = 0;
-	if (ft_strncmp(node->cmd_name, "unset", 5) == 0)
+	if (ft_strcmp(node->cmd_name, "unset") == 0)
 	{
 		ret = 1;
 		sh_unset(node, env);
 	}
-	if (ft_strncmp(node->cmd_name, "export", 6) == 0)
+	else if (ft_strcmp(node->cmd_name, "export") == 0)
 	{
 		ret = 1;
 		sh_export(node, env);
 	}
-	if (ft_strncmp(node->cmd_name, "exit", 5) == 0)
+	else if (ft_strcmp(node->cmd_name, "exit") == 0)
 	{
 		ret = 1;
 		sh_exit(node);
+	}
+	else if (ft_strcmp(node->cmd_name, "cd") == 0)
+	{
+		ret = 1;
+		sh_cd(node, env);
 	}
 	return (ret);
 }
@@ -49,6 +54,7 @@ void	execute_command(t_ast_node *node, t_env *env)
 {
 	int		status;
 	pid_t	pid;
+	char	*tmp;
 
 	if (execute_special_builtins(node, env))
 		return ;
@@ -62,7 +68,14 @@ void	execute_command(t_ast_node *node, t_env *env)
 	{
 		node->cmd_pid = pid;
 		waitpid(pid, &status, 0);
-		env_set(env, "?", ft_itoa(WEXITSTATUS(status)));
+		if (WIFSIGNALED(status))
+			tmp = ft_itoa((128 + WTERMSIG(status)));
+		else
+			tmp = ft_itoa(WEXITSTATUS(status));
+		if (ft_strcmp(tmp, "139") == 0)
+			ft_printf("Segmentation fault\n");
+		env_set(env, "?", tmp);
+		free(tmp);
 	}
 }
 

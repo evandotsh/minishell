@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 10:38:26 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:49:15 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@
 
 // Misc
 # define MAX_PIPE 200
+# define SHN "minishell"
 
 typedef struct s_token
 {
 	char					*token;
 	struct s_token			*next;
+	int						quote_type;
 }							t_token;
 
 // Node types
@@ -59,6 +61,13 @@ typedef enum e_node_type
 	ND_ARG,
 	ND_PIPE
 }							t_node_type;
+
+typedef enum e_quote_type
+{
+	QT_NONE,
+	QT_SINGLE,
+	QT_DOUBLE
+}							t_quote_type;
 
 typedef struct s_ast_node	t_ast_node;
 
@@ -126,7 +135,7 @@ char						*expand(t_env *env, char *string);
 void						expand_tokens(t_env *env, t_token *token);
 
 // QUOTES
-char						*interpret_quotes(char *str);
+char						*interpret_quotes(char *str, t_token *token);
 void						interpret_quotes_tokens(t_token *token);
 
 // LEXER
@@ -157,9 +166,9 @@ char						*get_exec_path_from_env(char *program, t_env *env);
 int							is_valid_identifier(char *str);
 
 // BUILTINS
-int							sh_echo(t_ast_node *node);
+int							sh_echo(t_ast_node *node, t_env *env);
 int							sh_env(t_env *env);
-int							sh_pwd(void);
+int							sh_pwd(t_env *env);
 int							sh_unset(t_ast_node *node, t_env *env);
 int							sh_cd(t_ast_node *node, t_env *env);
 int							sh_export(t_ast_node *node, t_env *env);
@@ -187,4 +196,8 @@ char						*ft_strcpy(char *dest, char *src);
 int							ft_strcmp(const char *s1, const char *s2);
 char						*ft_strncpy(char *dest, char *src, size_t n);
 void						print_ast_node(t_ast_node *node, int depth);
+char						*build_path(char *path, char *cmd_name);
+void						handle_quotes(t_env *env, t_token *token);
+void						bubble_sort_env(t_env *start, int listLength);
+void						multi_free(int count, ...);
 #endif

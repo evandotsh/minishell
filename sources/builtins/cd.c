@@ -6,24 +6,26 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:17:10 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:23:31 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:14:28 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	sh_error(char *error, int ret)
+int	sh_error(t_env *env, char *error, int ret)
 {
 	ft_printf_fd(STDERR_FILENO, "minishell: %s\n", error);
+	env_set(env, "?", "1");
 	return (ret);
 }
 
 int	cd_to_home(t_env *env, char *current_path)
 {
 	if (chdir(env_get(env, "HOME")) == -1)
-		return (sh_error("cd: HOME not set", 1));
+		return (sh_error(env, "cd: HOME not set", 1));
 	env_set(env, "OLDPWD", current_path);
 	env_set(env, "PWD", getcwd(NULL, 0));
+	env_set(env, "?", "0");
 	return (0);
 }
 
@@ -33,11 +35,12 @@ int	cd_to_oldpwd(t_env *env, char *current_path)
 
 	oldpwd = env_get(env, "OLDPWD");
 	if (!oldpwd)
-		return (sh_error("cd: OLDPWD not set", 1));
+		return (sh_error(env, "cd: OLDPWD not set", 1));
 	if (chdir(oldpwd) == -1)
-		return (sh_error("cd: OLDPWD not set", 1));
+		return (sh_error(env, "cd: OLDPWD not set", 1));
 	env_set(env, "OLDPWD", current_path);
 	env_set(env, "PWD", getcwd(NULL, 0));
+	env_set(env, "?", "0");
 	return (0);
 }
 
@@ -47,10 +50,12 @@ int	cd_to_directory(t_env *env, const char *directory, char *current_path)
 	{
 		errno = ENOENT;
 		perror("minishell");
+		env_set(env, "?", "1");
 		return (1);
 	}
 	env_set(env, "OLDPWD", current_path);
 	env_set(env, "PWD", getcwd(NULL, 0));
+	env_set(env, "?", "0");
 	return (0);
 }
 
