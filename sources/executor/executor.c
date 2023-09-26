@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 10:02:08 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:45:39 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	execute_command(t_ast_node *node, t_env *env)
 	else
 	{
 		node->cmd_pid = pid;
+		signal(SIGINT, empty_handler);
+		signal(SIGQUIT, empty_handler);
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 			tmp = ft_itoa((128 + WTERMSIG(status)));

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:57:34 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 11:25:44 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:41:01 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ int	is_builtin(char *cmd_name)
 		== 0 || ft_strcmp(cmd_name, "cd") == 0)
 		return (1);
 	return (0);
+}
+
+void	empty_handler(int sig)
+{
+	(void) sig;
 }

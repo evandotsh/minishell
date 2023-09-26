@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 20:00:37 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 09:56:58 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:52:25 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	heredoc_loop(t_env *env, char *delim, int fd)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			break ;
 		tmp = ft_strdup(line);
 		free(line);
 		expanded = expand(env, tmp);
