@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/09/26 12:08:28 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/09/26 16:11:26 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ OBJS	=	${SRCS:.c=.o}
 
 ${NAME}:	${OBJS}
 	$(MAKE) -C ./libft
-	${CC} ${OBJS} -o ${NAME} libft/libft.a -lreadline
+	${CC} ${OBJS} -o ${NAME} libft/libft.a -lreadline -I/opt/homebrew/Cellar/readline/8.2.1/include -L/opt/homebrew/Cellar/readline/8.2.1/lib
 
 all:	${NAME}
 

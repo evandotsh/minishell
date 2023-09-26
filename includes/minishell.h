@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 12:41:10 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:12:21 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,4 +206,5 @@ void						bubble_sort_env(t_env *start, int listLength);
 void						multi_free(int count, ...);
 char						*ft_strcat(char *dest, const char *src);
 void						empty_handler(int sig);
+extern void					rl_replace_line(const char *str, int i);
 #endif

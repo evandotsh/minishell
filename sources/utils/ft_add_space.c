@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 01:13:32 by sfernand          #+#    #+#             */
-/*   Updated: 2023/09/22 09:53:39 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:17:30 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*check_str(char *str)
 	int	i;
 
 	i = 0;
-	if ((str[0] == '>' || str[0] == '<') && str[1] == '\0')
+	if (str[0] == '>' || str[0] == '<' || str[0] == '|')
 		return (NULL);
 	while (str[i])
 	{
