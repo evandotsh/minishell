@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 09:09:35 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:02:08 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,15 @@ void	executor(t_ast_node *node, t_env *env)
 	if (node == NULL)
 		return ;
 	if (node->type == ND_CMD)
-		execute_command(node, env);
+	{
+		if (is_builtin(node->cmd_name) && node->cmd_stdin_file == NULL
+			&& node->cmd_stdout_file == NULL)
+			execute_builtins(node, env, NULL);
+		else
+			execute_command(node, env);
+	}
 	else if (node->type == ND_PIPE)
 		execute_pipe(node, env);
-}
-
-int	execute_special_builtins(t_ast_node *node, t_env *env)
-{
-	int	ret;
-
-	ret = 0;
-	if (ft_strcmp(node->cmd_name, "unset") == 0)
-	{
-		ret = 1;
-		sh_unset(node, env);
-	}
-	else if (ft_strcmp(node->cmd_name, "export") == 0)
-	{
-		ret = 1;
-		sh_export(node, env);
-	}
-	else if (ft_strcmp(node->cmd_name, "exit") == 0)
-	{
-		ret = 1;
-		sh_exit(node);
-	}
-	else if (ft_strcmp(node->cmd_name, "cd") == 0)
-	{
-		ret = 1;
-		sh_cd(node, env);
-	}
-	return (ret);
 }
 
 void	execute_command(t_ast_node *node, t_env *env)
@@ -56,8 +34,6 @@ void	execute_command(t_ast_node *node, t_env *env)
 	pid_t	pid;
 	char	*tmp;
 
-	if (execute_special_builtins(node, env))
-		return ;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -108,6 +84,12 @@ void	execute_pipe(t_ast_node *node, t_env *env)
 	}
 }
 
+void	_error(t_env *env, char *cmd_name, char *error)
+{
+	ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", cmd_name, error);
+	env_set(env, "?", "1");
+}
+
 void	launch_process(t_ast_node *node, t_env *env)
 {
 	char	**args;
@@ -121,6 +103,7 @@ void	launch_process(t_ast_node *node, t_env *env)
 	{
 		ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
 			args[0]);
+		free_split(args);
 		exit(127);
 	}
 	path = get_exec_path_from_env(args[0], env);
@@ -130,7 +113,6 @@ void	launch_process(t_ast_node *node, t_env *env)
 	free(path);
 	free_split(args);
 	if (ret == -1)
-		ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", args[0],
-			strerror(errno));
+		_error(env, node->cmd_name, strerror(errno));
 	exit(1);
 }

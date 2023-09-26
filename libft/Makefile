@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/27 16:03:37 by evmorvan          #+#    #+#              #
-#    Updated: 2023/09/24 19:39:35 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/09/26 12:08:08 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SOURCES =	$(addprefix sources/, \
 OBJECTS	=	$(SOURCES:.c=.o)
 CC		=	cc
 HEADERS	=	includes/
-CFLAGS	=	-Wall -Wextra -Werror -g -I $(HEADERS) -fsanitize=leak
+CFLAGS	=	-Wall -Wextra -Werror -g -I $(HEADERS)
 
 .c.o:
 		$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}

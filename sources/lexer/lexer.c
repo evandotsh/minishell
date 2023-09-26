@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:57:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 09:53:45 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:13:19 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ char	*check_redir(char *str, int i, int j, char *result)
 				return (free(str), NULL);
 		}
 		if (i > 0 && str[i] && str[i - 1] && str[i - 1] != '\0' && (
-				(str[i - 1] == '|' && str[i] != '|') || 
-				(str[i - 1] == '>' && str[i] != '>') || 
-				(str[i - 1] == '<' && str[i] != '<')) && 
-			(str[i - 1] != 34 && str[i - 1] != 39))
+				(str[i - 1] == '|' && str[i] != '|')
+				|| (str[i - 1] == '>' && str[i] != '>')
+				|| (str[i - 1] == '<' && str[i] != '<'))
+			&& (str[i - 1] != 34 && str[i - 1] != 39))
 			result[j++] = ' ';
 		result[j++] = str[i++];
 	}

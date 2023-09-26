@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 20:00:37 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 12:54:25 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 09:56:58 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ void	heredoc_loop(t_env *env, char *delim, int fd)
 {
 	char	*tmp;
 	char	*line;
+	char	*expanded;
 
 	while (1)
 	{
 		line = readline("> ");
-		tmp = expand(env, line);
+		tmp = ft_strdup(line);
 		free(line);
+		expanded = expand(env, tmp);
+		free(tmp);
+		tmp = expanded;
 		if (ft_strcmp(tmp, delim) == 0)
 		{
 			free(delim);
@@ -40,6 +44,7 @@ char	*handle_heredoc(t_env *env, t_token *tokens)
 	char	*result;
 	int		fd;
 	char	*random;
+	char	*tmp;
 
 	random = ft_itoa(ft_random());
 	result = ft_strjoin("/tmp/heredoc", random);
@@ -51,8 +56,12 @@ char	*handle_heredoc(t_env *env, t_token *tokens)
 		free(result);
 		free(delim);
 		perror("open");
+		env_set(env, "?", "1");
 		return (NULL);
 	}
+	tmp = expand(env, delim);
+	free(delim);
+	delim = tmp;
 	heredoc_loop(env, delim, fd);
 	close(fd);
 	return (result);

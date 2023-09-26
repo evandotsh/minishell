@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 12:21:33 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 09:14:53 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 07:52:42 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int	sh_pwd(t_env *env)
 {
-	char	pwd[PATH_MAX];
+	char	*pwd;
 
-	getcwd(pwd, sizeof(pwd));
+	pwd = getcwd(NULL, 0);
 	printf("%s\n", pwd);
+	free(pwd);
 	env_set(env, "?", "0");
 	return (0);
 }

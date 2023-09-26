@@ -6,14 +6,13 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/09/25 13:03:58 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/09/26 12:08:28 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra -g
-
+CFLAGS		=	-Wall -Werror -Wextra
 SRCS		=	$(addprefix sources/, \
 					minishell.c lexer/lexer.c \
 					utils/split_lexer.c utils/ft_epurstr.c \
@@ -25,7 +24,7 @@ SRCS		=	$(addprefix sources/, \
 					lexer/memory.c utils/misc.c utils/random.c \
 					parser/parser.c parser/utils.c parser/heredoc.c \
 					executor/executor.c executor/utils.c executor/misc.c \
-					utils/ft_add_space.c utils/misc2.c \
+					utils/ft_add_space.c utils/misc2.c utils/quote.c \
 				)
 OBJS	=	${SRCS:.c=.o}
 

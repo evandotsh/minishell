@@ -6,56 +6,20 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:04:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 13:49:25 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 06:52:58 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	get_length(t_env *env)
-{
-	int		list_length;
-	t_env	*temp;
-
-	list_length = 0;
-	temp = env;
-	while (temp != NULL)
-	{
-		list_length++;
-		temp = temp->next;
-	}
-	return (list_length);
-}
-
-void	sort_env(t_env *env, int listLength)
-{
-	int		i;
-	t_env	*start;
-
-	i = 0;
-	while (i < listLength)
-	{
-		start = env;
-		bubble_sort_env(start, listLength - i);
-		i++;
-	}
-}
-
-// Main function
 int	sh_print_export(t_env *env)
 {
-	int	list_length;
-
-	if (!env)
-		return (0);
-	list_length = get_length(env);
-	sort_env(env, list_length);
 	while (env)
 	{
-		if (env->value[0] != '\0' && (env->is_secret == 0 && ft_strcmp(env->key,
-					"_") != 0))
+		if (env->value[0] != '\0' && env->is_secret != 1 && ft_strcmp(env->key,
+				"_") != 0)
 			printf("declare -x %s=\"%s\"\n", env->key, env->value);
-		else if (env->is_secret == 0 && ft_strcmp(env->key, "_") != 0)
+		else if (env->is_secret != 1 && ft_strcmp(env->key, "_") != 0)
 			printf("declare -x %s\n", env->key);
 		env = env->next;
 	}

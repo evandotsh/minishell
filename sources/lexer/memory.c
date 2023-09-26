@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 13:52:47 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/22 10:21:38 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 09:51:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,42 @@ void	free_all_nodes(t_ast_node *nodes)
 	free(nodes);
 }
 
-void	*ft_realloc(void *ptr, size_t newsize)
+void	*ft_memcpy(void *dst, void const *src, size_t n)
 {
-	char	*newptr;
-	size_t	cursize;
+	unsigned char	*dst_c;
+	unsigned char	*src_c;
 
-	if (ptr == 0)
-		return (malloc(newsize));
-	cursize = sizeof(ptr);
-	if (newsize <= cursize)
+	if (!dst && !src)
+		return (NULL);
+	if (dst == src || n == 0)
+		return (dst);
+	dst_c = (unsigned char *)dst;
+	src_c = (unsigned char *)src;
+	while (n--)
+		*dst_c++ = *src_c++;
+	return (dst);
+}
+
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
+{
+	void	*new_ptr;
+
+	if (new_size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	if (!ptr)
+		return (malloc(new_size));
+	if (new_size <= old_size)
 		return (ptr);
-	newptr = malloc(newsize);
-	newptr = 0;
-	ft_memcpy(ptr, newptr, cursize);
+	new_ptr = malloc(new_size);
+	if (!new_ptr)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	ft_memcpy(new_ptr, ptr, old_size);
 	free(ptr);
-	return (newptr);
+	return (new_ptr);
 }

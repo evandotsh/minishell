@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 13:59:29 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:00:15 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	shell_pipeline(char *line, t_env *env)
 		return (1);
 	add_history(tmp);
 	free(tmp);
+	dequotter2000(tokens);
+	expand_tokens(tokens, env);
 	cmds = parser(tokens, env);
 	free_all_tokens(tokens);
 	executor(cmds, env);
@@ -66,6 +68,7 @@ void	shell_loop(t_env *env)
 {
 	char	*line;
 	int		i;
+	char	*tmp;
 
 	while (TRUE)
 	{
@@ -81,10 +84,11 @@ void	shell_loop(t_env *env)
 				free(line);
 				continue ;
 			}
-			line = ft_strdup(line + i);
-			shell_pipeline(line, env);
+			tmp = ft_strdup(line + i);
+			free(line);
+			shell_pipeline(tmp, env);
 		}
-		if (!line)
+		else if (!line)
 			ft_exit();
 	}
 }
@@ -98,5 +102,6 @@ int	main(int argc, char **argv, char **envp)
 	env = initialize_env(envp);
 	echo_control_seq(0);
 	shell_loop(env);
+	free_all_env(env);
 	return (0);
 }

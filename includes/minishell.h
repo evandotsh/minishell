@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 13:49:15 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:25:38 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void						handle_redirections(t_ast_node *cmd_node,
 char						*handle_heredoc(t_env *env, t_token *tokens);
 int							is_redir_token(t_token *token);
 t_ast_node					*parser(t_token *tokens, t_env *env);
+void						dequotter2000(t_token *tokens);
 
 // EXECUTOR
 void						execute_command(t_ast_node *node, t_env *env);
@@ -132,7 +133,7 @@ void						launch_process(t_ast_node *node, t_env *env);
 
 // EXPANDER
 char						*expand(t_env *env, char *string);
-void						expand_tokens(t_env *env, t_token *token);
+void						expand_tokens(t_token *token, t_env *env);
 
 // QUOTES
 char						*interpret_quotes(char *str, t_token *token);
@@ -154,7 +155,7 @@ void						free_all_nodes(t_ast_node *nodes);
 void						free_all_tokens(t_token *token);
 
 // ENV
-t_env						*env_from_parent(char **envp); 
+t_env						*env_from_parent(char **envp);
 void						env_set_secret(t_env *env, char *key);
 void						env_add(t_env *env, char *env_var);
 void						env_set(t_env *env, char *key, char *value);
@@ -164,6 +165,7 @@ void						env_remove(t_env *env, char *key);
 char						**env_to_envp_format(t_env *env);
 char						*get_exec_path_from_env(char *program, t_env *env);
 int							is_valid_identifier(char *str);
+void						free_all_env(t_env *env);
 
 // BUILTINS
 int							sh_echo(t_ast_node *node, t_env *env);
@@ -172,7 +174,8 @@ int							sh_pwd(t_env *env);
 int							sh_unset(t_ast_node *node, t_env *env);
 int							sh_cd(t_ast_node *node, t_env *env);
 int							sh_export(t_ast_node *node, t_env *env);
-int							sh_exit(t_ast_node *node);
+int							sh_exit(t_ast_node *node, t_env *env);
+int							is_builtin(char *cmd_name);
 
 // SIGNALS
 void						shell_sigquit(int sig);
@@ -191,7 +194,8 @@ void						shell_sigint(int sig);
 void						shell_sigquit(int sig);
 void						shell_sigterm(int sig);
 char						*ft_strcpy(char *dest, char *src);
-void						*ft_realloc(void *ptr, size_t size);
+void						*ft_realloc(void *ptr, size_t old_size,
+								size_t new_size);
 char						*ft_strcpy(char *dest, char *src);
 int							ft_strcmp(const char *s1, const char *s2);
 char						*ft_strncpy(char *dest, char *src, size_t n);
@@ -200,4 +204,5 @@ char						*build_path(char *path, char *cmd_name);
 void						handle_quotes(t_env *env, t_token *token);
 void						bubble_sort_env(t_env *start, int listLength);
 void						multi_free(int count, ...);
+char						*ft_strcat(char *dest, const char *src);
 #endif

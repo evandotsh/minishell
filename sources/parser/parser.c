@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:16:38 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 13:59:05 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 05:51:26 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ t_ast_node	*parser(t_token *tokens, t_env *env)
 	{
 		ret = parser_loop(&cmd_node, tokens, env);
 		if (ret == 1)
-		{
 			return (cmd_node);
-		}
 		else if (ret == 2)
 			tokens = tokens->next;
 		tokens = tokens->next;

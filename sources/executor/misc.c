@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:57:34 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 09:22:11 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:25:44 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,30 @@ void	execute_builtins(t_ast_node *node, t_env *env, char **args)
 		ret = sh_env(env);
 	else if (ft_strcmp(node->cmd_name, "pwd") == 0)
 		ret = sh_pwd(env);
+	else if (ft_strcmp(node->cmd_name, "unset") == 0)
+		ret = sh_unset(node, env);
+	else if (ft_strcmp(node->cmd_name, "export") == 0)
+		ret = sh_export(node, env);
+	else if (ft_strcmp(node->cmd_name, "exit") == 0)
+		ret = sh_exit(node, env);
+	else if (ft_strcmp(node->cmd_name, "cd") == 0)
+		ret = sh_cd(node, env);
 	if (ret != -1337)
 	{
-		free_split(args);
-		exit(ret);
+		if (args)
+		{
+			free_split(args);
+			exit(ret);
+		}
 	}
+}
+
+int	is_builtin(char *cmd_name)
+{
+	if (ft_strcmp(cmd_name, "echo") == 0 || ft_strcmp(cmd_name, "env") == 0
+		|| ft_strcmp(cmd_name, "pwd") == 0 || ft_strcmp(cmd_name, "unset") == 0
+		|| ft_strcmp(cmd_name, "export") == 0 || ft_strcmp(cmd_name, "exit")
+		== 0 || ft_strcmp(cmd_name, "cd") == 0)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 13:00:27 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 13:48:53 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:37:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,51 @@ void	multi_free(int count, ...)
 		free(ptr);
 	}
 	va_end(ap);
+}
+
+void	free_all_env(t_env *env)
+{
+	t_env	*temp;
+
+	while (env)
+	{
+		temp = env;
+		env = env->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
+}
+
+void	postrun_exit(t_env *env, t_ast_node *node, int count, ...)
+{
+	va_list	ap;
+	void	*ptr;
+
+	va_start(ap, count);
+	while (count--)
+	{
+		ptr = va_arg(ap, void *);
+		free(ptr);
+	}
+	va_end(ap);
+	free_all_env(env);
+	free_all_nodes(node);
+	exit(0);
+}
+
+char	*ft_strcat(char *dest, const char *src)
+{
+	size_t	dest_len;
+	size_t	i;
+
+	dest_len = ft_strlen(dest);
+	i = 0;
+	while (src[i])
+	{
+		dest[dest_len + i] = src[i];
+		i++;
+	}
+	dest[dest_len + i] = '\0';
+	return (dest);
 }
