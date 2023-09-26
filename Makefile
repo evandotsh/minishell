@@ -12,7 +12,7 @@
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra -g
 SRCS		=	$(addprefix sources/, \
 					minishell.c lexer/lexer.c \
 					utils/split_lexer.c utils/ft_epurstr.c \

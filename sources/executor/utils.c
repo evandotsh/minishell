@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:09:27 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 21:28:46 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:42:49 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ void	setup_redirections(t_ast_node *node)
 	if (node->cmd_stdout_file)
 	{
 		if (node->cmd_stdout_dest == 1)
-			out = open(node->cmd_stdout_file, O_WRONLY | O_TRUNC | O_CREAT);
+			out = open(node->cmd_stdout_file, O_WRONLY | O_TRUNC | O_CREAT,
+					0644);
 		else
-			out = open(node->cmd_stdout_file, O_APPEND | O_WRONLY);
+			out = open(node->cmd_stdout_file, O_APPEND | O_WRONLY,
+					0644);
 		if (out == -1)
 			error(node->cmd_name, strerror(errno));
 		dup2(out, STDOUT_FILENO);
