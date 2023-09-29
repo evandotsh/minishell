@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 07:08:35 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/21 07:08:53 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:01:03 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_env	*env_from_parent(char **envp)
 		if (!tmp)
 			return (NULL);
 		tmp->key = ft_strndup(envp[i], ft_strchr(envp[i], '=') - envp[i]);
-		tmp->value = ft_strdup(ft_strchr(envp[i], '=') + 1);
+		if (ft_strcmp(tmp->key, "SHLVL") == 0)
+			tmp->value = ft_itoa(ft_atoi(ft_strchr(envp[i], '=') + 1) + 1);
+		else
+			tmp->value = ft_strdup(ft_strchr(envp[i], '=') + 1);
 		tmp->next = env;
 		tmp->prev = NULL;
 		if (env)
@@ -73,7 +76,10 @@ void	env_set(t_env *env, char *key, char *value)
 		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
 		{
 			free(tmp->value);
-			tmp->value = ft_strdup(value);
+			if (!value)
+				tmp->value = NULL;
+			else
+				tmp->value = ft_strdup(value);
 			return ;
 		}
 		tmp = tmp->next;
@@ -92,7 +98,10 @@ void	env_add_back(t_env *env, char *key, char *value)
 	if (!tmp->next)
 		return ;
 	tmp->next->key = ft_strdup(key);
-	tmp->next->value = ft_strdup(value);
+	if (!value)
+		tmp->next->value = NULL;
+	else
+		tmp->next->value = ft_strdup(value);
 	tmp->next->is_secret = 0;
 	tmp->next->next = NULL;
 	tmp->next->prev = tmp;

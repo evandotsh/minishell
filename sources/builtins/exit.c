@@ -6,17 +6,46 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 13:59:55 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 11:51:46 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:57:12 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+unsigned long long	ft_atoull(const char *str)
+{
+	int					i;
+	unsigned long long	nb;
+	unsigned long long	sign;
+
+	i = 0;
+	nb = 0;
+	sign = 1;
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nb = nb * 10 + (str[i] - '0');
+		i++;
+	}
+	return (nb * sign);
+}
 
 int	ft_is_code_valid(char *str)
 {
 	int	i;
 
 	i = 0;
+	if (ft_atoull(str) > 9223372036854775807ULL
+		|| ft_atoull(str) < -9223372036854775808ULL)
+		return (0);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	if (!str[i])

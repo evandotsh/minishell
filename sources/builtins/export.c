@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:04:53 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 06:52:58 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/29 13:23:29 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	sh_print_export(t_env *env)
 {
 	while (env)
 	{
-		if (env->value[0] != '\0' && env->is_secret != 1 && ft_strcmp(env->key,
+		if (env->value && env->is_secret != 1 && ft_strcmp(env->key,
 				"_") != 0)
 			printf("declare -x %s=\"%s\"\n", env->key, env->value);
 		else if (env->is_secret != 1 && ft_strcmp(env->key, "_") != 0)
@@ -24,6 +24,20 @@ int	sh_print_export(t_env *env)
 		env = env->next;
 	}
 	return (0);
+}
+
+void	handle_no_value(char *arg, char **key, char **value)
+{
+	if (ft_strchr(arg, '='))
+	{
+		*key = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+		*value = ft_strdup("");
+	}
+	else
+	{
+		*key = ft_strdup(arg);
+		*value = NULL;
+	}
 }
 
 int	sh_add_export(char *arg, t_env *env)
@@ -40,13 +54,7 @@ int	sh_add_export(char *arg, t_env *env)
 				ft_strlen(ft_strchr(arg, '=')) - 1);
 	}
 	else
-	{
-		if (ft_strchr(arg, '='))
-			key = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
-		else
-			key = ft_strdup(arg);
-		value = ft_strdup("");
-	}
+		handle_no_value(arg, &key, &value);
 	if (!is_valid_identifier(key))
 		ret = 1;
 	if (ret == 0)

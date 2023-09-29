@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/27 16:03:37 by evmorvan          #+#    #+#              #
-#    Updated: 2023/09/26 12:08:08 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/09/29 16:23:09 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SOURCES =	$(addprefix sources/, \
 OBJECTS	=	$(SOURCES:.c=.o)
 CC		=	cc
 HEADERS	=	includes/
-CFLAGS	=	-Wall -Wextra -Werror -g -I $(HEADERS)
+CFLAGS	=	-Wall -Wextra -Werror -I $(HEADERS)
 
 .c.o:
 		$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:57:34 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 12:41:01 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:11:30 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,8 @@ int	is_builtin(char *cmd_name)
 
 void	empty_handler(int sig)
 {
-	(void) sig;
+	if (sig == SIGINT)
+		ft_printf("^C\n");
+	else if (sig == SIGQUIT)
+		ft_printf("^\\Quit: 3\n");
 }

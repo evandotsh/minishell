@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 16:45:36 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:03:01 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ t_env	*initialize_env(char **envp)
 		tmp = malloc(sizeof(t_env));
 		if (!tmp)
 			return (NULL);
-		tmp->key = "SHLVL";
-		tmp->value = "1";
+		tmp->key = ft_strdup("SHLVL");
+		tmp->value = ft_strdup("1");
 		tmp->is_secret = 0;
 		tmp->next = env;
 		tmp->prev = NULL;
