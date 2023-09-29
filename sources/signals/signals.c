@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:24:09 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 11:53:40 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:56:34 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	handle_sigint(int sig)
 {
 	if (g_signal == 0)
 		return ;
-	//rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	if (g_signal == sig)
 	{
@@ -53,7 +53,7 @@ void	shell_sigterm(int sig)
 {
 	g_signal = sig;
 	rl_on_new_line();
-	//rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 	(void) sig;
 }

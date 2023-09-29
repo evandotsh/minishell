@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 01:13:32 by sfernand          #+#    #+#             */
-/*   Updated: 2023/09/28 14:27:00 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:56:54 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*add_spaces(char *str)
 		free(str);
 		return (free(result), NULL);
 	}
-	result = check_redir(str, i, j, result);;
+	result = check_redir(str, i, j, result);
 	free(str);
 	return (result);
 }
