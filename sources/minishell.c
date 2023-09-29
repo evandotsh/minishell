@@ -6,14 +6,15 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/28 16:03:01 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/09/29 16:55:23 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_exit(void)
+void	ft_exit(t_env *env)
 {
+	free_all_env(env);
 	ft_printf("exit\n");
 	exit(0);
 }
@@ -89,7 +90,7 @@ void	shell_loop(t_env *env)
 			shell_pipeline(tmp, env);
 		}
 		else if (!line)
-			ft_exit();
+			ft_exit(env);
 	}
 }
 
