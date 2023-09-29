@@ -27,14 +27,14 @@ char	*check_str(char *str)
 			while ((str[i] != 34 && str[i] != 39) && str[i])
 				i++;
 		}
-		if ((str[i] == '|' && (str[i + 2] == '>' || str[i + 2] == '<'))
-			&& str[i])
+		if ((str[i] == '|' && (str[i + 2] == '>'
+					|| str[i + 2] == '<')) && str[i])
 			return (NULL);
-		if (str[i] == '<' && str[i + 1] == '<' && (str[i + 2] == '<' || str[i
-					+ 2] == '\0') && str[i])
+		if (str[i] == '<' && str[i + 1] == '<'
+			&& (str[i + 2] == '<' || str[i + 2] == '\0') && str[i])
 			return (NULL);
-		if (str[i] == '>' && str[i + 1] == '>' && (str[i + 2] == '>' || str[i
-					+ 2] == '\0') && str[i])
+		if (str[i] == '>' && str[i + 1] == '>'
+			&& (str[i + 2] == '>' || str[i + 2] == '\0') && str[i])
 			return (NULL);
 		i++;
 	}
@@ -65,7 +65,7 @@ char	*add_spaces(char *str)
 		free(str);
 		return (free(result), NULL);
 	}
-	result = check_redir(str, i, j, result);
+	result = check_redir(str, i, j, result);;
 	free(str);
 	return (result);
 }

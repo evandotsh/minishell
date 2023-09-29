@@ -18,7 +18,7 @@ void	handle_sigint(int sig)
 {
 	if (g_signal == 0)
 		return ;
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	rl_on_new_line();
 	if (g_signal == sig)
 	{
@@ -53,7 +53,7 @@ void	shell_sigterm(int sig)
 {
 	g_signal = sig;
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	rl_redisplay();
 	(void) sig;
 }
