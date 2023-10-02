@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 21:09:27 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 16:42:49 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/01 23:42:47 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,11 @@ void	setup_redirections(t_ast_node *node)
 
 void	error(char *cmd_name, char *error)
 {
-	ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", cmd_name, error);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd_name, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(error, STDERR_FILENO);
+	exit(1);
 }
 
 void	pidis0(t_ast_node *node, t_env *env, int *pipefd, int fd)

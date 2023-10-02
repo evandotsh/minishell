@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 12:22:27 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/24 19:57:03 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:40:10 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*env_get(t_env *env, char *key)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 			return (tmp->value);
 		tmp = tmp->next;
 	}
@@ -33,7 +33,7 @@ void	env_remove(t_env *env, char *key)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			if (tmp->prev)
 				tmp->prev->next = tmp->next;

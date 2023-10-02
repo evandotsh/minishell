@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:17:10 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/25 09:14:28 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/01 23:30:34 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int	sh_cd(t_ast_node *node, t_env *env)
 		return (cd_to_home(env, current_path));
 	if (get_node_arg_count(node) >= 1)
 	{
-		if (ft_strncmp(get_node_arg(node, 0), "-", 2) == 0)
+		if (ft_strcmp(get_node_arg(node, 0), "-") == 0)
 			return (cd_to_oldpwd(env, current_path));
-		else if (ft_strncmp(get_node_arg(node, 0), "~", 2) == 0)
+		else if (ft_strcmp(get_node_arg(node, 0), "~") == 0)
 			return (cd_to_home(env, current_path));
 		else
 			return (cd_to_directory(env, get_node_arg(node, 0), current_path));

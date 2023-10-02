@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 07:08:35 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/28 16:01:03 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/01 23:30:52 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	env_set_secret(t_env *env, char *key)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			tmp->is_secret = 1;
 			return ;
@@ -73,7 +73,7 @@ void	env_set(t_env *env, char *key, char *value)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			free(tmp->value);
 			if (!value)

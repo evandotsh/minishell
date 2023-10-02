@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:41:11 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 08:44:04 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 00:29:32 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,26 @@ void	dequotter2000(t_token *tokens)
 		remove_quotes(tokens);
 		tokens = tokens->next;
 	}
+}
+
+int	is_directory(char *filepath)
+{
+	int	fd;
+
+	fd = open(filepath, O_DIRECTORY, 0644);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	return (1);
+}
+
+int	is_executable(char *filepath)
+{
+	int	fd;
+
+	fd = open(filepath, X_OK, 0644);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	return (1);
 }

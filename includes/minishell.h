@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:07:41 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 16:12:21 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 00:29:42 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,4 +207,8 @@ void						multi_free(int count, ...);
 char						*ft_strcat(char *dest, const char *src);
 void						empty_handler(int sig);
 extern void					rl_replace_line(const char *str, int i);
+int							is_directory(char *filepath);
+void						handle_command_not_found(char **args, char *tmp);
+void						handle_path_is_directory(char **args, char *path);
+int							is_executable(char *filepath);
 #endif

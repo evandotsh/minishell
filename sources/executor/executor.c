@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 06:43:32 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/26 12:45:39 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 00:32:49 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	execute_pipe(t_ast_node *node, t_env *env)
 	}
 }
 
-void	_error(t_env *env, char *cmd_name, char *error)
+void	_error(t_env *env)
 {
-	ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", cmd_name, error);
+	ft_printf_fd(STDERR_FILENO, "minishell: execve error\n");
 	env_set(env, "?", "1");
 }
 
@@ -101,20 +101,17 @@ void	launch_process(t_ast_node *node, t_env *env)
 
 	args = build_argv(node);
 	execute_builtins(node, env, args);
-	if (!get_exec_path_from_env(args[0], env))
-	{
-		ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found\n",
-			args[0]);
-		free_split(args);
-		exit(127);
-	}
 	path = get_exec_path_from_env(args[0], env);
+	if (!path || is_executable(path) == 1)
+		handle_command_not_found(args, path);
+	if (is_directory(path) == 1)
+		handle_path_is_directory(args, path);
 	formatted_env = env_to_envp_format(env);
 	ret = execve(path, args, formatted_env);
 	free_split(formatted_env);
 	free(path);
 	free_split(args);
 	if (ret == -1)
-		_error(env, node->cmd_name, strerror(errno));
+		_error(env);
 	exit(1);
 }
