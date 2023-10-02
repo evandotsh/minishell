@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:10:56 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/10/01 23:52:24 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:05:20 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,6 @@ void	ft_exit(t_env *env)
 	exit(0);
 }
 
-t_env	*initialize_env(char **envp)
-{
-	t_env	*env;
-	t_env	*tmp;
-
-	env = NULL;
-	if (envp[0])
-		env = env_from_parent(envp);
-	else
-	{
-		tmp = malloc(sizeof(t_env));
-		if (!tmp)
-			return (NULL);
-		tmp->key = ft_strdup("SHLVL");
-		tmp->value = ft_strdup("1");
-		tmp->is_secret = 0;
-		tmp->next = env;
-		tmp->prev = NULL;
-		env = tmp;
-	}
-	env_set(env, "?", "0");
-	env_set_secret(env, "?");
-	return (env);
-}
-
 int	shell_pipeline(char *line, t_env *env)
 {
 	t_token		*tokens;
@@ -53,7 +28,11 @@ int	shell_pipeline(char *line, t_env *env)
 	tmp = ft_strdup(line);
 	tokens = lexer(line);
 	if (!tokens->token)
+	{
+		free_all_tokens(tokens);
+		free(tmp);
 		return (1);
+	}
 	add_history(tmp);
 	free(tmp);
 	dequotter2000(tokens);
@@ -65,11 +44,28 @@ int	shell_pipeline(char *line, t_env *env)
 	return (0);
 }
 
+int	execute_prompt(char *line, t_env *env)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	if (line[i] == '\0')
+	{
+		free(line);
+		return (1);
+	}
+	tmp = ft_strdup(line + i);
+	free(line);
+	shell_pipeline(tmp, env);
+	return (0);
+}
+
 void	shell_loop(t_env *env)
 {
 	char	*line;
-	int		i;
-	char	*tmp;
 
 	while (TRUE)
 	{
@@ -77,20 +73,16 @@ void	shell_loop(t_env *env)
 		line = readline(PROMPT);
 		if (line && line[0] != '\0')
 		{
-			i = 0;
-			while (line[i] == ' ' || line[i] == '\t')
-				i++;
-			if (line[i] == '\0')
-			{
-				free(line);
+			if (execute_prompt(line, env) == 1)
 				continue ;
-			}
-			tmp = ft_strdup(line + i);
-			free(line);
-			shell_pipeline(tmp, env);
 		}
+		else if (line && ft_strlen(line) == 0)
+			free(line);
 		else if (!line)
+		{
+			free(line);
 			ft_exit(env);
+		}
 	}
 }
 

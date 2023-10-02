@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:28:49 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/09/21 08:12:55 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:06:15 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	**execute(char **split, char const *s, char c, int index)
 		{
 			i = verif_quote(s, i);
 			if (i == 0)
-				return (NULL);
+				return (free_split(split), NULL);
 		}
 		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
 		{

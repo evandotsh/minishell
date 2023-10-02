@@ -6,7 +6,7 @@
 #    By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 11:08:02 by evmorvan          #+#    #+#              #
-#    Updated: 2023/10/02 00:15:15 by evmorvan         ###   ########.fr        #
+#    Updated: 2023/10/02 13:12:11 by evmorvan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS		=	$(addprefix sources/, \
 					parser/parser.c parser/utils.c parser/heredoc.c \
 					executor/executor.c executor/utils.c executor/misc.c \
 					utils/ft_add_space.c utils/misc2.c utils/quote.c \
-					executor/utils2.c \
+					executor/utils2.c env/init.c \
 				)
 OBJS	=	${SRCS:.c=.o}
 

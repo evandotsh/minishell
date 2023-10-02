@@ -6,7 +6,7 @@
 /*   By: evmorvan <evmorvan@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:17:10 by evmorvan          #+#    #+#             */
-/*   Updated: 2023/10/01 23:30:34 by evmorvan         ###   ########.fr       */
+/*   Updated: 2023/10/02 12:46:06 by evmorvan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,22 @@ int	sh_error(t_env *env, char *error, int ret)
 
 int	cd_to_home(t_env *env, char *current_path)
 {
+	char	*pwd;
+
 	if (chdir(env_get(env, "HOME")) == -1)
 		return (sh_error(env, "cd: HOME not set", 1));
 	env_set(env, "OLDPWD", current_path);
-	env_set(env, "PWD", getcwd(NULL, 0));
+	pwd = getcwd(NULL, 0);
+	env_set(env, "PWD", pwd);
 	env_set(env, "?", "0");
+	free(pwd);
 	return (0);
 }
 
 int	cd_to_oldpwd(t_env *env, char *current_path)
 {
 	char	*oldpwd;
+	char	*pwd;
 
 	oldpwd = env_get(env, "OLDPWD");
 	if (!oldpwd)
@@ -39,13 +44,17 @@ int	cd_to_oldpwd(t_env *env, char *current_path)
 	if (chdir(oldpwd) == -1)
 		return (sh_error(env, "cd: OLDPWD not set", 1));
 	env_set(env, "OLDPWD", current_path);
-	env_set(env, "PWD", getcwd(NULL, 0));
+	pwd = getcwd(NULL, 0);
+	env_set(env, "PWD", pwd);
 	env_set(env, "?", "0");
+	free(pwd);
 	return (0);
 }
 
 int	cd_to_directory(t_env *env, const char *directory, char *current_path)
 {
+	char	*pwd;
+
 	if (chdir(directory) == -1)
 	{
 		errno = ENOENT;
@@ -53,9 +62,11 @@ int	cd_to_directory(t_env *env, const char *directory, char *current_path)
 		env_set(env, "?", "1");
 		return (1);
 	}
+	pwd = getcwd(NULL, 0);
 	env_set(env, "OLDPWD", current_path);
-	env_set(env, "PWD", getcwd(NULL, 0));
+	env_set(env, "PWD", pwd);
 	env_set(env, "?", "0");
+	free(pwd);
 	return (0);
 }
 
